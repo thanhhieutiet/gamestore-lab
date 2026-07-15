@@ -1,0 +1,191 @@
+<nav class="sticky top-0 z-50 w-full" style="height:60px; background:var(--surface-1); border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:center; padding:0 24px;">
+  <div class="w-full max-w-[1280px] flex items-center justify-between gap-4">
+    <!-- Left side: Logo & Nav Links -->
+    <div class="flex items-center gap-6">
+      <a href="index.html" class="logo flex items-center gap-2" style="text-decoration:none;">
+        <div style="width:28px;height:28px;border-radius:8px;background:var(--brand);display:flex;align-items:center;justify-content:center;">
+          <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"></path>
+          </svg>
+        </div>
+        <span style="font-size:18px;font-weight:700;color:var(--text-1);">Game<span style="color:var(--accent);">Lab</span></span>
+      </a>
+      
+      <!-- Nav links -->
+      <div class="hidden md:flex items-center gap-4">
+        <a href="index.html" class="text-sm font-semibold hover:text-indigo-500 transition" style="color:var(--text-2); text-decoration:none;">Trang chủ</a>
+        <a href="#" class="text-sm font-semibold hover:text-indigo-500 transition" style="color:var(--text-2); text-decoration:none;">Deals</a>
+      </div>
+    </div>
+
+    <!-- Center: Search bar -->
+    <div class="nav-search flex-1 max-w-[440px]" style="display:flex;align-items:center;background:var(--surface-0);border:1px solid var(--border);border-radius:10px;padding:0 14px;height:38px;gap:10px;">
+      <svg class="w-4 h-4" style="color:var(--text-4);" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+      </svg>
+      <input
+        type="text"
+        id="navbar-search"
+        placeholder="Tìm kiếm game..."
+        style="border:none;background:transparent;outline:none;font-size:14px;width:100%;font-family:inherit;color:var(--text-1);"
+        onkeydown="if(event.key === 'Enter') doSearch()"
+      />
+      <button onclick="doSearch()" style="background:none;border:none;cursor:pointer;color:var(--text-3);padding:0;display:flex;align-items:center;">
+        <svg class="w-4 h-4 hover:text-indigo-500 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Right side: Cart & Auth -->
+    <div class="flex items-center gap-4">
+      <!-- Theme Toggle Button -->
+      <button id="theme-toggle-btn" style="width:36px;height:36px;border-radius:8px;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-2);">
+        <!-- Sun Icon (visible in Dark Mode) -->
+        <svg id="theme-toggle-sun" class="w-6 h-6 hover:text-indigo-500 transition hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m0 13.5V21M4.95 4.95l1.59 1.59m10.92 10.92l1.59 1.59M3 12h2.25m13.5 0H21M4.95 19.05l1.59-1.59m10.92-10.92l1.59-1.59M12 8.25a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5z"></path>
+        </svg>
+        <!-- Moon Icon (visible in Light Mode) -->
+        <svg id="theme-toggle-moon" class="w-6 h-6 hover:text-indigo-500 transition hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"></path>
+        </svg>
+      </button>
+
+      <!-- Cart Icon -->
+      <a href="cart.html" style="position:relative;width:36px;height:36px;border-radius:8px;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-2);">
+        <svg class="w-6 h-6 hover:text-indigo-500 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"></path>
+        </svg>
+        <span
+          id="cart-count"
+          style="position:absolute;top:2px;right:2px;width:16px;height:16px;border-radius:50%;background:var(--accent);color:white;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;border:2px solid var(--surface-1);display:none;"
+          >0</span
+        >
+      </a>
+
+      <!-- Auth trigger button/greeting -->
+      <div id="auth-section" class="flex items-center gap-4"></div>
+    </div>
+  </div>
+</nav>
+
+<script>
+  function doSearch() {
+    const q = document.getElementById("navbar-search").value;
+    window.location.href = `/index.html?q=${q}`;
+  }
+
+  function updateCartBadge() {
+    const cartCountEl = document.getElementById("cart-count");
+    if (!cartCountEl) return;
+    try {
+      const cart = JSON.parse(sessionStorage.getItem("cart") || "[]");
+      const count = cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
+      if (count > 0) {
+        cartCountEl.textContent = count;
+        cartCountEl.style.display = "flex";
+      } else {
+        cartCountEl.style.display = "none";
+      }
+    } catch (err) {
+      console.error("Error parsing cart:", err);
+      cartCountEl.style.display = "none";
+    }
+  }
+
+  function toggleDropdown() {
+    const menu = document.getElementById("user-dropdown-menu");
+    if (menu) {
+      menu.classList.toggle("hidden");
+    }
+  }
+
+  function initNavbar() {
+    const token = localStorage.getItem("token");
+    const username = localStorage.getItem("username");
+    const roleId = localStorage.getItem("role_id");
+    const avatarPath = localStorage.getItem("avatar_path");
+    const authSection = document.getElementById("auth-section");
+    
+    if (!authSection) return;
+
+    if (token && username) {
+      const initial = username.charAt(0).toUpperCase();
+      let adminOption = '';
+      if (roleId == 1) {
+        adminOption = `
+          <a href="/admin.html" class="group flex items-center px-4 py-2 text-sm text-indigo-600 hover:bg-indigo-50 font-medium" style="text-decoration:none;">
+            Trang quản trị
+          </a>
+        `;
+      }
+
+      let avatarHTML = `<span id="user-initials">${initial}</span>`;
+      if (avatarPath) {
+        avatarHTML = `
+          <img src="${avatarPath}" alt="avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.style.display='none'; document.getElementById('user-initials-fallback').style.display='flex';" />
+          <span id="user-initials-fallback" style="display:none;width:100%;height:100%;align-items:center;justify-content:center;">${initial}</span>
+        `;
+      }
+
+      authSection.innerHTML = `
+        <div class="relative inline-block text-left" id="user-dropdown-container">
+          <div class="flex items-center gap-3">
+            <span id="user-greeting" style="font-size:14px;font-weight:500;color:var(--text-2);"></span>
+            <button id="user-menu-button" onclick="toggleDropdown()" style="width:32px;height:32px;border-radius:50%;background:var(--brand-lt);color:var(--brand);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;outline:none;overflow:hidden;padding:0;">
+              ${avatarHTML}
+            </button>
+          </div>
+          <div id="user-dropdown-menu" class="hidden absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none z-50" style="background:var(--surface-1); border: 1px solid var(--border); border-radius: var(--radius-md);">
+            <div class="py-1">
+              ${adminOption}
+              <a href="/profile.html" class="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" style="color:var(--text-2); text-decoration:none;">
+                Hồ sơ
+              </a>
+              <a href="/orders.html" class="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" style="color:var(--text-2); text-decoration:none;">
+                Đơn hàng
+              </a>
+            </div>
+            <div class="py-1">
+              <button onclick="logout()" class="w-full text-left group flex items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50" style="border:none; background:transparent; cursor:pointer;">
+                Đăng xuất
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      // Render username using innerHTML — DOM XSS entry point
+      document.getElementById("user-greeting").innerHTML = `Xin chào, ${username}`;
+    } else {
+      authSection.innerHTML = `
+        <a href="/login.html" class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-indigo-600" style="color:var(--text-2); text-decoration:none;">
+          Đăng nhập
+        </a>
+        <a href="/register.html" class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg" style="background:var(--brand); border-radius:var(--radius-sm); text-decoration:none; display:inline-flex; align-items:center; height:36px;">
+          Đăng ký
+        </a>
+      `;
+    }
+
+    updateCartBadge();
+  }
+
+  // Register key click listener outside of dropdown
+  window.addEventListener("click", function(e) {
+    const menu = document.getElementById("user-dropdown-menu");
+    const btn = document.getElementById("user-menu-button");
+    if (menu && btn && !btn.contains(e.target) && !menu.contains(e.target)) {
+      menu.classList.add("hidden");
+    }
+  });
+
+  // Assign functions to window
+  window.doSearch = doSearch;
+  window.updateCartBadge = updateCartBadge;
+  window.toggleDropdown = toggleDropdown;
+  window.initNavbar = initNavbar;
+
+  // Run initialization
+  initNavbar();
+</script>

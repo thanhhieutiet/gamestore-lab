@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <script>if(localStorage.getItem('theme')==='light')document.documentElement.classList.add('light');else document.documentElement.classList.remove('light');</script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GameLab — Thanh toán</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="/assets/css/shoplab.css" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ["Inter", "sans-serif"] }
+        }
+      }
+    };
+  </script>
+</head>
+<body style="font-family:'Inter',sans-serif; background:var(--surface-0); color:var(--text-1); -webkit-font-smoothing:antialiased;">
+  <!-- Navbar placeholder -->
+  <div id="navbar-placeholder"></div>
+
+  <!-- Main Container -->
+  <main style="max-width:1280px; margin:0 auto; padding:32px 24px; min-height:calc(100vh - 60px - 280px);">
+    <h1 style="font-size:24px; font-weight:800; color:var(--text-1); margin-bottom:24px;">Thanh toán đơn hàng</h1>
+
+    <div style="display:flex; gap:32px; flex-direction:column; lg:flex-direction:row; align-items:flex-start;">
+      
+      <!-- Left: Form fields (2/3) -->
+      <div style="flex: 2; width:100%; display:flex; flex-direction:column; gap:24px;">
+        
+        <!-- Delivery Form Card -->
+        <div style="background:var(--surface-1); border:1px solid var(--border); border-radius:var(--radius-lg); padding:28px;">
+          <h2 style="font-size:18px; font-weight:700; color:var(--text-1); margin-bottom:20px; border-bottom:1px solid var(--border); padding-bottom:12px;">Thông tin nhận key game & hóa đơn</h2>
+          
+          <form id="checkout-form" onsubmit="event.preventDefault();">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
+              <div>
+                <label style="display:block; font-size:13px; font-weight:600; color:var(--text-2); margin-bottom:6px;">Tên người nhận key/hóa đơn</label>
+                <input
+                  type="text"
+                  id="recipient-name"
+                  placeholder="e.g. Nguyễn Văn A"
+                  required
+                  style="width:100%; height:40px; padding:0 14px; border:1px solid var(--border); border-radius:var(--radius-sm); font-size:14px; background:var(--surface-0); color:var(--text-1); outline:none;"
+                />
+              </div>
+              <div>
+                <label style="display:block; font-size:13px; font-weight:600; color:var(--text-2); margin-bottom:6px;">Số điện thoại</label>
+                <input
+                  type="text"
+                  id="recipient-phone"
+                  placeholder="e.g. 0901234567"
+                  required
+                  style="width:100%; height:40px; padding:0 14px; border:1px solid var(--border); border-radius:var(--radius-sm); font-size:14px; background:var(--surface-0); color:var(--text-1); outline:none;"
+                />
+              </div>
+            </div>
+
+            <div style="margin-bottom:16px;">
+              <label style="display:block; font-size:13px; font-weight:600; color:var(--text-2); margin-bottom:6px;">Tỉnh / Thành phố</label>
+              <select id="recipient-city" style="width:100%; height:40px; padding:0 14px; border:1px solid var(--border); border-radius:var(--radius-sm); font-size:14px; background:var(--surface-0); color:var(--text-1); outline:none; cursor:pointer;">
+                <option value="Hanoi">Hà Nội</option>
+                <option value="HCM">TP. Hồ Chí Minh</option>
+                <option value="DaNang">Đà Nẵng</option>
+                <option value="HaiPhong">Hải Phòng</option>
+                <option value="CanTho">Cần Thơ</option>
+                <option value="Other">Tỉnh thành khác</option>
+              </select>
+            </div>
+
+            <div style="margin-bottom:16px;">
+              <label style="display:block; font-size:13px; font-weight:600; color:var(--text-2); margin-bottom:6px;">Email nhận key game / Địa chỉ nhận hóa đơn</label>
+              <input
+                type="text"
+                id="recipient-address"
+                placeholder="e.g. email@domain.com / Số 123 Đường ABC..."
+                required
+                style="width:100%; height:40px; padding:0 14px; border:1px solid var(--border); border-radius:var(--radius-sm); font-size:14px; background:var(--surface-0); color:var(--text-1); outline:none;"
+              />
+            </div>
+
+            <div style="margin-bottom:20px;">
+              <label style="display:block; font-size:13px; font-weight:600; color:var(--text-2); margin-bottom:6px;">Ghi chú</label>
+              <textarea
+                id="recipient-notes"
+                placeholder="Ghi chú nhận key / hóa đơn nếu có..."
+                style="width:100%; padding:12px; border:1px solid var(--border); border-radius:var(--radius-sm); font-size:14px; background:var(--surface-0); color:var(--text-1); outline:none; height:80px; box-sizing:border-box;"
+              ></textarea>
+            </div>
+
+            <!-- Payment Methods -->
+            <div class="payment-methods" style="margin-bottom: 20px;">
+              <label style="display:block; font-size:13px; font-weight:600; color:var(--text-2); margin-bottom:10px;">Phương thức thanh toán</label>
+              <div style="display:flex; flex-direction:column; gap:10px;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <input type="radio" id="pay-cod" name="payment_method" value="COD" checked onclick="toggleCardFields(false)" style="accent-color:var(--brand); width:16px; height:16px; cursor:pointer;" />
+                  <label for="pay-cod" style="font-size:14px; color:var(--text-2); cursor:pointer;">Thanh toán khi nhận hàng (COD)</label>
+                </div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <input type="radio" id="pay-bank" name="payment_method" value="Bank" onclick="toggleCardFields(false)" style="accent-color:var(--brand); width:16px; height:16px; cursor:pointer;" />
+                  <label for="pay-bank" style="font-size:14px; color:var(--text-2); cursor:pointer;">Chuyển khoản ngân hàng</label>
+                </div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <input type="radio" id="pay-card" name="payment_method" value="Card" onclick="toggleCardFields(true)" style="accent-color:var(--brand); width:16px; height:16px; cursor:pointer;" />
+                  <label for="pay-card" style="font-size:14px; color:var(--text-2); cursor:pointer;">Thẻ tín dụng (Credit Card)</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card fields container (hidden by default) -->
+            <div id="card-fields-container" class="hidden" style="border: 1px solid var(--border); padding:16px; border-radius:var(--radius-md); background:var(--surface-0); margin-bottom:20px;">
+              <div style="margin-bottom:12px;">
+                <label style="display:block; font-size:12px; font-weight:600; color:var(--text-3); margin-bottom:4px;">Số thẻ</label>
+                <input type="text" placeholder="xxxx xxxx xxxx xxxx" style="width:100%; height:36px; padding:0 12px; border:1px solid var(--border); border-radius:var(--radius-sm); font-size:13px; background:var(--surface-1); color:var(--text-1);" />
+              </div>
+              <div style="display:flex; gap:12px;">
+                <div style="flex:1;">
+                  <label style="display:block; font-size:12px; font-weight:600; color:var(--text-3); margin-bottom:4px;">Hạn dùng</label>
+                  <input type="text" placeholder="MM/YY" style="width:100%; height:36px; padding:0 12px; border:1px solid var(--border); border-radius:var(--radius-sm); font-size:13px; background:var(--surface-1); color:var(--text-1);" />
+                </div>
+                <div style="flex:1;">
+                  <label style="display:block; font-size:12px; font-weight:600; color:var(--text-3); margin-bottom:4px;">CVC / CVV</label>
+                  <input type="text" placeholder="123" style="width:100%; height:36px; padding:0 12px; border:1px solid var(--border); border-radius:var(--radius-sm); font-size:13px; background:var(--surface-1); color:var(--text-1);" />
+                </div>
+              </div>
+            </div>
+
+          </form>
+        </div>
+
+        <!-- Coupon Card -->
+        <div style="background:var(--surface-1); border:1px solid var(--border); border-radius:var(--radius-lg); padding:24px;">
+          <h2 style="font-size:16px; font-weight:700; color:var(--text-1); margin-bottom:16px;">Mã giảm giá</h2>
+          
+          <div style="display:flex; gap:12px; align-items:center;">
+            <input
+              type="text"
+              id="coupon-code"
+              placeholder="e.g. COUPON10"
+              style="flex:1; height:38px; padding:0 14px; border:1px solid var(--border); border-radius:var(--radius-sm); font-size:14px; background:var(--surface-0); color:var(--text-1); outline:none;"
+            />
+            <button onclick="applyCoupon()" style="display:inline-flex; align-items:center; justify-content:center; font-size:13px; font-weight:600; border-radius:var(--radius-sm); cursor:pointer; padding:0 18px; height:38px; border:none; background:var(--brand); color:white; font-family:inherit; transition:background .15s;" onmouseover="this.style.background='var(--brand-dark)'" onmouseout="this.style.background='var(--brand)'">
+              Áp dụng
+            </button>
+          </div>
+          
+          <!-- Coupon Message output (Vulnerable to SQLi and DOM XSS) -->
+          <div id="coupon-message" style="margin-top:10px; font-size:13px; font-weight:600;"></div>
+        </div>
+
+      </div>
+
+      <!-- Right: Summary Card (1/3) -->
+      <div style="flex: 1; width:100%; background:var(--surface-1); border:1px solid var(--border); border-radius:var(--radius-lg); padding:24px;">
+        <h2 style="font-size:18px; font-weight:700; color:var(--text-1); margin-bottom:20px; border-bottom:1px solid var(--border); padding-bottom:12px;">Đơn hàng của bạn</h2>
+        
+        <!-- Cart Items List -->
+        <div id="checkout-summary-items" style="border-bottom:1px solid var(--border); padding-bottom:16px; margin-bottom:16px;">
+          <!-- Loaded dynamically -->
+        </div>
+
+        <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:14px; color:var(--text-2);">
+          <span>Tạm tính</span>
+          <span id="checkout-subtotal">$0.00</span>
+        </div>
+
+        <div id="checkout-discount-row" style="display:none; justify-content:space-between; margin-bottom:12px; font-size:14px; color:var(--success);">
+          <span>Mã giảm giá</span>
+          <span id="checkout-discount">-$0.00</span>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; margin-bottom:16px; font-size:14px; color:var(--text-2);">
+          <span>Phí giao dịch key game</span>
+          <span>$30.00 <span style="font-size:12px; color:var(--text-3);">(30k)</span></span>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; margin-bottom:24px; font-size:16px; font-weight:700; color:var(--text-1); border-top:1px dashed var(--border); padding-top:16px;">
+          <span>Tổng thanh toán</span>
+          <span id="checkout-total">$0.00</span>
+        </div>
+
+        <button onclick="placeOrder()" style="width:100%; display:inline-flex; align-items:center; justify-content:center; font-size:15px; font-weight:700; border-radius:var(--radius-sm); cursor:pointer; padding:0 16px; height:44px; border:none; background:var(--brand); color:white; font-family:inherit; transition:background .15s;" onmouseover="this.style.background='var(--brand-dark)'" onmouseout="this.style.background='var(--brand)'">
+          Đặt hàng
+        </button>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer placeholder -->
+  <div id="footer-placeholder"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+  <script src="/assets/js/toast.js"></script>
+  <script src="/assets/js/auth.js"></script>
+  <script src="/assets/js/cart.js"></script>
+  <script>
+    const API = "http://localhost:3000/api";
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      await includeComponent("#navbar-placeholder", "/components/navbar.html");
+      await includeComponent("#footer-placeholder", "/components/footer.html");
+      
+      // Redirect if not logged in
+      if (!isAuthenticated()) {
+        showToast("Yêu cầu đăng nhập", "Bạn cần đăng nhập để tiến hành thanh toán.", "warning");
+        setTimeout(() => {
+          window.location.href = "login.html?next=checkout.html";
+        }, 1500);
+        return;
+      }
+
+      loadOrderSummary();
+    });
+
+    function toggleCardFields(show) {
+      const container = document.getElementById("card-fields-container");
+      if (show) {
+        container.classList.remove("hidden");
+      } else {
+        container.classList.add("hidden");
+      }
+    }
+
+    function loadOrderSummary() {
+      const summaryList = document.getElementById("checkout-summary-items");
+      const cart = getCart();
+
+      if (cart.length === 0) {
+        window.location.href = "cart.html";
+        return;
+      }
+
+      summaryList.innerHTML = "";
+      cart.forEach(item => {
+        const itemSubtotal = item.price * item.quantity;
+        const div = document.createElement("div");
+        div.style.cssText = "display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; font-size:13px; color:var(--text-2);";
+        div.innerHTML = `
+          <span style="max-width:200px; word-break:break-word;">${item.name} <strong style="color:var(--text-3);">× ${item.quantity}</strong></span>
+          <span style="font-weight:600;">$${itemSubtotal.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+        `;
+        summaryList.appendChild(div);
+      });
+
+      updateTotals();
+    }
+
+    let discountPercent = 0;
+
+    function updateTotals() {
+      const subtotal = getCartTotal();
+      const shipping = 30.00; // 30k
+      
+      const discountAmount = subtotal * (discountPercent / 100);
+      const total = subtotal + shipping - discountAmount;
+
+      document.getElementById("checkout-subtotal").textContent = `$${subtotal.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+      document.getElementById("checkout-discount-row").style.display = discountPercent > 0 ? "flex" : "none";
+      document.getElementById("checkout-discount").textContent = `-$${discountAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+      document.getElementById("checkout-total").textContent = `$${total.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+      
+      window.finalOrderTotal = total;
+    }
+
+    async function applyCoupon() {
+      const code = document.getElementById("coupon-code").value.trim();
+      const messageEl = document.getElementById("coupon-message");
+      if (!code) {
+        messageEl.innerHTML = "<span class='text-red-500'>Vui lòng nhập mã giảm giá</span>";
+        return;
+      }
+
+      messageEl.innerHTML = "<span class='text-gray-500'>Đang kiểm tra...</span>";
+
+      try {
+        // SQL Injection & DOM XSS point: parameters passed without sanitization
+        const res = await fetch(`${API}/coupons/validate?code=${code}`);
+        const data = await res.json();
+
+        if (res.ok) {
+          // Render discount message directly using innerHTML (SQLi + DOM XSS)
+          messageEl.innerHTML = `<span class="text-green-600">${data.message} (Giảm ${data.discount}%)</span>`;
+          discountPercent = data.discount || 10;
+          updateTotals();
+        } else {
+          // Renders SQL errors or standard failure messages via innerHTML
+          messageEl.innerHTML = `<span class="text-red-600">Lỗi: ${data.error || 'Mã không hợp lệ'}</span>`;
+          discountPercent = 0;
+          updateTotals();
+        }
+      } catch (err) {
+        console.error(err);
+        messageEl.innerHTML = `<span class="text-red-600">Lỗi hệ thống: ${err.message}</span>`;
+        discountPercent = 0;
+        updateTotals();
+      }
+    }
+
+    async function placeOrder() {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        showToast("Yêu cầu đăng nhập", "Bạn cần đăng nhập để đặt hàng.", "warning");
+        setTimeout(() => {
+          window.location.href = "login.html?next=checkout.html";
+        }, 1000);
+        return;
+      }
+
+      const name = document.getElementById("recipient-name").value.trim();
+      const phone = document.getElementById("recipient-phone").value.trim();
+      const address = document.getElementById("recipient-address").value.trim();
+
+      if (!name || !phone || !address) {
+        showToast("Thiếu thông tin", "Vui lòng điền đầy đủ thông tin nhận key game và hóa đơn.", "error");
+        return;
+      }
+
+      const cart = getCart();
+      
+      // Trust client-side calculated total (Insecure Price Validation bypass vulnerability)
+      const total = window.finalOrderTotal || (getCartTotal() + 30.00);
+
+      try {
+        const res = await fetch(`${API}/orders`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            items: cart,
+            total: total
+          })
+        });
+
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.error || 'Đặt hàng không thành công');
+        }
+
+        showToast("Đặt hàng thành công!", `Đơn hàng #${data.orderId} đã được tạo.`, "success");
+        clearCart();
+
+        setTimeout(() => {
+          window.location.href = "orders.html";
+        }, 2000);
+
+      } catch (err) {
+        console.error(err);
+        showToast("Lỗi đặt hàng", err.message, "error");
+      }
+    }
+  </script>
+</body>
+</html>

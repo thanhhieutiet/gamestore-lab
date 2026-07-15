@@ -1,0 +1,160 @@
+:root {
+  /* Brand colors */
+  --brand: #6366f1; /* Indigo-500 — primary actions, links */
+  --brand-dark: #4f46e5; /* Indigo-600 — Hover state */
+  --brand-lt: #1d1e2a; /* darker indigo tint for badges/buttons */
+  --accent: #f59e0b; /* Amber-500 — sale badges, highlights */
+  --accent-lt: #2e2315;
+
+  /* Surfaces */
+  --surface-0: #0b0e14; /* dark body background */
+  --surface-1: #151821; /* dark panels/cards background */
+
+  /* Borders */
+  --border: #232833;
+  --border-md: #323847;
+
+  /* Text hierarchy */
+  --text-1: #f3f4f6; /* white/off-white headings */
+  --text-2: #d1d5db; /* light grey body */
+  --text-3: #9ca3af;
+  --text-4: #6b7280;
+
+  /* Border radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+
+  /* Semantic */
+  --success: #10b981;
+  --success-lt: #132d24;
+  --danger: #ef4444;
+  --danger-lt: #361717;
+  --warning: #f59e0b;
+  --warning-lt: #2e2315;
+}
+
+html.light {
+  --brand: #4f46e5;
+  --brand-dark: #4338ca;
+  --brand-lt: #eef2ff;
+  --accent: #f97316;
+  --accent-lt: #fff7ed;
+
+  --surface-0: #f8f9fc;
+  --surface-1: #ffffff;
+  --border: #e5e7eb;
+  --border-md: #d1d5db;
+  --text-1: #111827;
+  --text-2: #374151;
+  --text-3: #6b7280;
+  --text-4: #9ca3af;
+
+  --success-lt: #d1fae5;
+  --danger-lt: #fee2e2;
+  --warning-lt: #fef3c7;
+}
+
+/* General Reset & Base Styles */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background-color: var(--surface-0);
+  color: var(--text-2);
+  margin: 0;
+  padding: 0;
+}
+
+/* Smooth Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--surface-0);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-md);
+  border-radius: var(--radius-sm);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-4);
+}
+
+/* Animations */
+@keyframes toastIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-toast-in {
+  animation: toastIn 0.25s ease forwards;
+}
+
+/* Headings with letter spacing */
+h1 {
+  color: var(--text-1);
+  letter-spacing: -0.5px;
+}
+h2 {
+  color: var(--text-1);
+  letter-spacing: -0.3px;
+}
+h3 {
+  color: var(--text-1);
+}
+
+/* Product Card Hover Effect */
+.product-card {
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.product-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.09);
+  transform: translateY(-2px);
+}
+.product-card:hover img {
+  transform: scale(1.04);
+}
+
+/* Theme Mappings for Tailwind Utilities */
+body, .bg-slate-50, .bg-gray-50 {
+  background-color: var(--surface-0) !important;
+}
+.bg-white, .bg-slate-100, .bg-gray-100 {
+  background-color: var(--surface-1) !important;
+}
+.text-slate-900, .text-slate-800, .text-gray-900, .text-gray-800 {
+  color: var(--text-1) !important;
+}
+.text-slate-700, .text-slate-600, .text-gray-700, .text-gray-600 {
+  color: var(--text-2) !important;
+}
+.text-slate-500, .text-gray-500 {
+  color: var(--text-3) !important;
+}
+.text-slate-400, .text-gray-400 {
+  color: var(--text-4) !important;
+}
+.border-slate-100, .border-slate-200, .border-gray-100, .border-gray-200 {
+  border-color: var(--border) !important;
+}
+.border-slate-300, .border-gray-300 {
+  border-color: var(--border-md) !important;
+}
+

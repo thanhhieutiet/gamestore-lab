@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <script>if(localStorage.getItem('theme')==='light')document.documentElement.classList.add('light');else document.documentElement.classList.remove('light');</script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GameLab — Lịch sử mua hàng</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="/assets/css/shoplab.css" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ["Inter", "sans-serif"] }
+        }
+      }
+    };
+  </script>
+</head>
+<body style="font-family:'Inter',sans-serif; background:var(--surface-0); color:var(--text-1); -webkit-font-smoothing:antialiased;">
+  <!-- Navbar placeholder -->
+  <div id="navbar-placeholder"></div>
+
+  <!-- Main Content Wrapper -->
+  <main style="max-width:1280px; margin:0 auto; padding:32px 24px; min-height:calc(100vh - 60px - 280px);">
+    
+    <!-- Title & Breadcrumb -->
+    <div class="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div>
+        <h1 class="text-2xl font-extrabold tracking-tight text-slate-900 mb-1">Lịch sử mua game</h1>
+        <p class="text-sm text-slate-500">Xem và quản lý các hóa đơn game bản quyền bạn đã sở hữu.</p>
+      </div>
+      <!-- Quick Diagnostic Alert info -->
+      <div class="p-3 text-xs bg-indigo-950/40 border border-indigo-800 text-indigo-300 rounded-lg max-w-md font-mono">
+        <span class="font-bold">Security Lab Info:</span> Xem chi tiết đơn hàng sử dụng endpoint <code class="bg-indigo-900/60 px-1 rounded">/api/orders/:id</code> không kiểm tra phân quyền (IDOR).
+      </div>
+    </div>
+
+    <!-- Main Grid Layout -->
+    <div class="grid grid-cols-1 gap-6">
+      
+      <!-- Orders List Panel -->
+      <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+        <div class="px-6 py-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+          <h3 class="font-bold text-slate-800">Danh sách đơn hàng của bạn</h3>
+          <span class="text-xs bg-slate-200 text-slate-800 px-2.5 py-0.5 rounded font-semibold font-mono" id="orders-count-badge">0 đơn hàng</span>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm text-left text-slate-500">
+            <thead class="text-xs text-slate-700 uppercase bg-slate-100 border-b border-slate-200">
+              <tr>
+                <th scope="col" class="px-6 py-4">Mã đơn hàng (ID)</th>
+                <th scope="col" class="px-6 py-4">Ngày đặt</th>
+                <th scope="col" class="px-6 py-4">Tổng thanh toán</th>
+                <th scope="col" class="px-6 py-4">Trạng thái</th>
+                <th scope="col" class="px-6 py-4 text-center">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="orders-table-body">
+              <tr>
+                <td colspan="5" class="px-6 py-8 text-center text-slate-400">
+                  <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-600 mx-auto mb-2"></div>
+                  Đang tải lịch sử đơn hàng...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Export Console Box -->
+      <div id="export-console-container" class="hidden bg-slate-900 text-slate-100 rounded-xl border border-slate-800 p-6 font-mono shadow-md">
+        <div class="flex items-center justify-between mb-3 border-b border-slate-800 pb-2">
+          <span class="text-xs font-bold text-indigo-400 flex items-center gap-1.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+            KẾT QUẢ XUẤT HÓA ĐƠN (OS Command Output)
+          </span>
+          <button onclick="document.getElementById('export-console-container').classList.add('hidden')" class="text-slate-500 hover:text-slate-300 text-xs">Đóng x</button>
+        </div>
+        <pre id="export-stdout" class="text-sm p-4 bg-black/50 rounded-lg overflow-auto max-h-48 text-emerald-400"></pre>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Modal IDOR xem chi tiết -->
+  <div id="order-detail-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-md max-h-full">
+      <div class="relative bg-white rounded-lg shadow border border-slate-200">
+        <!-- Modal header -->
+        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+          <h3 class="text-lg font-bold text-slate-900">
+            Chi tiết đơn hàng (Vulnerability Audit)
+          </h3>
+          <button type="button" class="text-slate-400 bg-transparent hover:bg-slate-200 hover:text-slate-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="order-detail-modal">
+            <svg class="w-3 h-3" fill="none" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+            </svg>
+          </button>
+        </div>
+        <!-- Modal body -->
+        <div class="p-4 md:p-5">
+          <div id="modal-content" class="space-y-4 font-normal">
+            <!-- Loaded dynamically -->
+          </div>
+          <!-- IDOR interactive test form -->
+          <div class="mt-6 border-t border-slate-100 pt-4">
+            <label class="block text-xs font-semibold text-slate-400 uppercase mb-2">Thử nghiệm IDOR (Thay đổi ID đơn hàng bất kỳ)</label>
+            <div class="flex gap-2">
+              <input type="number" id="idor-custom-id" class="bg-slate-50 border border-slate-300 text-slate-950 text-sm rounded-lg block w-full p-2" placeholder="Nhập ID đơn hàng khác..." min="1" />
+              <button onclick="inspectCustomOrder()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-4 py-2 rounded-lg">Truy vấn</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer placeholder -->
+  <div id="footer-placeholder"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+  <script src="/assets/js/toast.js"></script>
+  <script src="/assets/js/auth.js"></script>
+  <script src="/assets/js/cart.js"></script>
+  <script>
+    const API = "http://localhost:3000/api";
+    let currentUser = null;
+    let detailModal = null;
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      // Authenticated check
+      if (!isAuthenticated()) {
+        window.location.href = 'login.html?next=orders.html';
+        return;
+      }
+
+      await includeComponent("#navbar-placeholder", "/components/navbar.html");
+      await includeComponent("#footer-placeholder", "/components/footer.html");
+
+      // Initialize flowbite modal instance
+      const modalElement = document.getElementById('order-detail-modal');
+      detailModal = new Modal(modalElement);
+
+      await fetchUserAndOrders();
+    });
+
+    async function fetchUserAndOrders() {
+      try {
+        // Fetch current user details
+        const profileRes = await fetch(`${API}/users/profile`, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        
+        if (!profileRes.ok) throw new Error("Không thể lấy thông tin tài khoản");
+        currentUser = await profileRes.json();
+
+        // Fetch all system orders
+        const ordersRes = await fetch(`${API}/orders`);
+        if (!ordersRes.ok) throw new Error("Không thể lấy danh sách đơn hàng");
+        const allOrders = await ordersRes.json();
+
+        // Filter client-side by user_id to showcase vulnerability concept
+        const myOrders = allOrders.filter(order => order.user_id === currentUser.id);
+
+        renderOrders(myOrders);
+      } catch (err) {
+        console.error(err);
+        showToast("Lỗi tải dữ liệu", err.message, "error");
+        document.getElementById("orders-table-body").innerHTML = `
+          <tr>
+            <td colspan="5" class="px-6 py-8 text-center text-red-500">
+              Lỗi: ${err.message}
+            </td>
+          </tr>
+        `;
+      }
+    }
+
+    function renderOrders(orders) {
+      const tbody = document.getElementById("orders-table-body");
+      document.getElementById("orders-count-badge").textContent = `${orders.length} đơn hàng`;
+
+      if (orders.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="5" class="px-6 py-8 text-center text-slate-400">
+              Bạn chưa có đơn hàng nào đã mua.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = "";
+      orders.forEach(order => {
+        const tr = document.createElement("tr");
+        tr.className = "bg-white border-b border-slate-200 hover:bg-slate-50";
+        
+        // Mock order date using consistent value or generation
+        const dateStr = "15/07/2026";
+        const formattedPrice = parseFloat(order.total_amount).toLocaleString('en-US');
+        
+        const statusBadge = order.status === 'completed'
+          ? `<span class="px-2.5 py-0.5 rounded text-xs font-bold bg-green-100 text-green-800">completed</span>`
+          : `<span class="px-2.5 py-0.5 rounded text-xs font-bold bg-amber-100 text-amber-800">pending</span>`;
+
+        tr.innerHTML = `
+          <td class="px-6 py-4 font-mono font-medium text-slate-900">${order.id}</td>
+          <td class="px-6 py-4">${dateStr}</td>
+          <td class="px-6 py-4 font-semibold text-slate-900">$${formattedPrice}</td>
+          <td class="px-6 py-4">${statusBadge}</td>
+          <td class="px-6 py-4 flex items-center justify-center gap-2">
+            <button onclick="viewOrderDetails(${order.id})" class="px-3 py-1.5 text-xs font-bold text-indigo-600 hover:bg-indigo-50 border border-indigo-200 rounded-lg transition">Xem chi tiết</button>
+            <button onclick="exportInvoice(${order.id})" class="px-3 py-1.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition flex items-center gap-1">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
+              Xuất hóa đơn
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function viewOrderDetails(orderId) {
+      const modalContent = document.getElementById("modal-content");
+      modalContent.innerHTML = `
+        <div class="flex justify-center items-center py-6">
+          <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-600"></div>
+        </div>
+      `;
+      
+      document.getElementById('idor-custom-id').value = orderId;
+      detailModal.show();
+
+      try {
+        const res = await fetch(`${API}/orders/${orderId}`, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        
+        if (!res.ok) {
+          const errData = await res.json();
+          throw new Error(errData.error || "Không thể lấy thông tin chi tiết hóa đơn");
+        }
+        
+        const order = await res.json();
+        
+        modalContent.innerHTML = `
+          <div class="space-y-3 font-normal">
+            <div>
+              <strong class="text-slate-500 text-xs uppercase block">Mã đơn hàng (Order ID)</strong> 
+              <span class="font-mono text-sm text-slate-900">${order.id}</span>
+            </div>
+            <div>
+              <strong class="text-slate-500 text-xs uppercase block">Mã khách hàng (User ID)</strong> 
+              <span class="font-mono text-sm text-slate-900">${order.user_id}</span>
+            </div>
+            <div>
+              <strong class="text-slate-500 text-xs uppercase block">Tổng thanh toán</strong> 
+              <span class="text-sm font-semibold text-slate-900">$${parseFloat(order.total_amount).toFixed(2)}</span>
+            </div>
+            <div>
+              <strong class="text-slate-500 text-xs uppercase block">Trạng thái</strong> 
+              <span class="px-2.5 py-0.5 rounded text-xs font-bold ${order.status === 'completed' ? 'bg-green-100 text-green-800' : 'bg-amber-100 text-amber-800'}">${order.status}</span>
+            </div>
+          </div>
+        `;
+      } catch (err) {
+        console.error(err);
+        modalContent.innerHTML = `
+          <div class="p-3 rounded-lg text-sm bg-red-100 text-red-800 border border-red-200">
+            <strong>Lỗi tải:</strong> ${err.message}
+          </div>
+        `;
+      }
+    }
+
+    function inspectCustomOrder() {
+      const customId = document.getElementById('idor-custom-id').value.trim();
+      if (customId) {
+        viewOrderDetails(customId);
+      }
+    }
+
+    async function exportInvoice(orderId) {
+      const consoleBox = document.getElementById("export-console-container");
+      const stdoutText = document.getElementById("export-stdout");
+
+      consoleBox.classList.remove("hidden");
+      stdoutText.textContent = "Đang chạy tác vụ xuất hóa đơn...";
+      
+      try {
+        const res = await fetch(`${API}/orders/export`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ order_id: orderId })
+        });
+        
+        const data = await res.json();
+        
+        if (!res.ok) {
+          throw new Error(data.error || "Gặp lỗi khi xuất hóa đơn");
+        }
+
+        stdoutText.textContent = data.stdout || data.message || "Không nhận được phản hồi stdout từ Server.";
+        showToast("Xuất hóa đơn thành công!", "Kiểm tra bảng console output bên dưới.", "success");
+      } catch (err) {
+        console.error(err);
+        stdoutText.textContent = `Lỗi hệ thống: ${err.message}`;
+        showToast("Lỗi xuất hóa đơn", err.message, "error");
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,1147 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <script>
+      if (localStorage.getItem("theme") === "light")
+        document.documentElement.classList.add("light");
+      else document.documentElement.classList.remove("light");
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GameLab — Chi tiết game</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link href="/assets/css/shoplab.css" rel="stylesheet" />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: { sans: ["Inter", "sans-serif"] },
+          },
+        },
+      };
+    </script>
+    <style>
+      /* --- Product page layout additions (scoped, reuses existing design tokens) --- */
+      .pd-hero {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 21 / 8;
+        min-height: 260px;
+        background: var(--surface-0);
+        overflow: hidden;
+      }
+      @media (max-width: 767px) {
+        .pd-hero {
+          aspect-ratio: 16 / 10;
+        }
+      }
+      .pd-hero img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .pd-hero-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.88) 0%,
+          rgba(0, 0, 0, 0.55) 32%,
+          rgba(0, 0, 0, 0.05) 65%,
+          transparent 100%
+        );
+        pointer-events: none;
+      }
+      .pd-hero-content {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 28px 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      @media (max-width: 640px) {
+        .pd-hero-content {
+          padding: 18px 20px;
+        }
+      }
+      .pd-hero-title {
+        color: #fff;
+        font-size: 32px;
+        font-weight: 800;
+        line-height: 1.15;
+        letter-spacing: -0.01em;
+        text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+        margin: 0;
+      }
+      @media (max-width: 640px) {
+        .pd-hero-title {
+          font-size: 22px;
+        }
+      }
+      .pd-stock-float {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        z-index: 2;
+      }
+      .pd-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      @media (min-width: 1024px) {
+        .pd-grid {
+          grid-template-columns: 1fr 360px;
+          align-items: start;
+        }
+      }
+      .pd-sidebar-sticky {
+        position: sticky;
+        top: 24px;
+      }
+      .pd-qty-btn {
+        width: 40px;
+        height: 100%;
+        border: none;
+        background: transparent;
+        font-size: 18px;
+        font-weight: 700;
+        cursor: pointer;
+        color: var(--text-2);
+        transition: background 0.15s;
+      }
+      .pd-qty-btn:hover {
+        background: var(--surface-0);
+      }
+      .pd-tab-btn {
+        position: relative;
+        padding: 16px 22px;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text-3);
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        transition: color 0.15s;
+        white-space: nowrap;
+      }
+      .pd-tab-btn::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -1px;
+        height: 2px;
+        background: transparent;
+        transition: background 0.15s;
+      }
+      .pd-tab-btn.active {
+        color: var(--brand);
+      }
+      .pd-tab-btn.active::after {
+        background: var(--brand);
+      }
+      .pd-review-card {
+        background: var(--surface-0);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        padding: 18px;
+        transition: border-color 0.15s;
+      }
+      .pd-review-card:hover {
+        border-color: var(--brand);
+      }
+      .pd-faq-item summary {
+        cursor: pointer;
+        list-style: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .pd-faq-item summary::-webkit-details-marker {
+        display: none;
+      }
+      .pd-faq-icon {
+        transition: transform 0.15s;
+        color: var(--text-3);
+        flex-shrink: 0;
+      }
+      .pd-faq-item[open] .pd-faq-icon {
+        transform: rotate(45deg);
+      }
+    </style>
+  </head>
+  <body
+    style="
+      font-family: &quot;Inter&quot;, sans-serif;
+      background: var(--surface-0);
+      color: var(--text-1);
+      -webkit-font-smoothing: antialiased;
+    "
+  >
+    <!-- Navbar placeholder -->
+    <div id="navbar-placeholder"></div>
+
+    <!-- Main Container -->
+    <main
+      style="
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 32px 24px;
+        min-height: calc(100vh - 60px - 280px);
+      "
+    >
+      <!-- Breadcrumbs -->
+      <nav class="flex mb-6" aria-label="Breadcrumb">
+        <ol class="inline-flex items-center space-x-1 md:space-x-2">
+          <li class="inline-flex items-center">
+            <a
+              href="index.html"
+              class="inline-flex items-center text-sm font-semibold hover:text-indigo-600 transition"
+              style="color: var(--text-2); text-decoration: none"
+            >
+              <svg
+                class="w-3 h-3 mr-2.5"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"
+                />
+              </svg>
+              Trang chủ
+            </a>
+          </li>
+          <li>
+            <div class="flex items-center">
+              <svg
+                class="w-3 h-3 text-gray-400 mx-1"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M9 5l7 7-7 7"
+                ></path>
+              </svg>
+              <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2"
+                >Game</span
+              >
+            </div>
+          </li>
+          <li aria-current="page">
+            <div class="flex items-center">
+              <svg
+                class="w-3 h-3 text-gray-400 mx-1"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M9 5l7 7-7 7"
+                ></path>
+              </svg>
+              <span
+                id="breadcrumb-product-name"
+                class="ml-1 text-sm font-semibold text-gray-400 md:ml-2"
+                >Đang tải...</span
+              >
+            </div>
+          </li>
+        </ol>
+      </nav>
+
+      <!-- Hero: banner image + title overlay (Steam/Epic style) -->
+      <div
+        style="
+          border-radius: var(--radius-lg);
+          border: 1px solid var(--border);
+          margin-bottom: 24px;
+          overflow: hidden;
+        "
+      >
+        <div class="pd-hero">
+          <img
+            id="product-img-display"
+            src=""
+            alt="product image"
+            style="display: none"
+          />
+          <div
+            id="product-img-placeholder"
+            style="
+              position: absolute;
+              inset: 0;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              gap: 8px;
+              color: var(--text-4);
+              background: var(--surface-0);
+            "
+          >
+            <svg
+              class="w-16 h-16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
+              ></path>
+            </svg>
+            <span style="font-size: 14px">Đang tải hình ảnh...</span>
+          </div>
+
+          <div class="pd-stock-float">
+            <span id="product-stock-badge" class="badge">Trạng thái</span>
+          </div>
+
+          <div class="pd-hero-overlay"></div>
+          <div class="pd-hero-content">
+            <span
+              id="product-cat-badge"
+              style="
+                align-self: flex-start;
+                font-size: 11px;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                background: var(--brand-lt);
+                color: var(--brand);
+                padding: 4px 10px;
+                border-radius: 6px;
+              "
+              >DANH MỤC</span
+            >
+            <h1 id="product-name" class="pd-hero-title">Đang tải...</h1>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content grid: main (description + tabs) / sidebar (purchase box) -->
+      <div class="pd-grid">
+        <!-- Main column -->
+        <div style="display: flex; flex-direction: column; gap: 24px">
+          <!-- Description card -->
+          <div
+            style="
+              background: var(--surface-1);
+              border: 1px solid var(--border);
+              border-radius: var(--radius-lg);
+              padding: 28px;
+            "
+          >
+            <h3
+              style="
+                font-size: 12px;
+                font-weight: 700;
+                color: var(--text-3);
+                text-transform: uppercase;
+                letter-spacing: 0.07em;
+                margin-bottom: 10px;
+              "
+            >
+              Mô tả game
+            </h3>
+            <p
+              id="product-desc"
+              style="
+                font-size: 14px;
+                color: var(--text-2);
+                line-height: 1.7;
+                margin: 0;
+              "
+            >
+              Đang tải thông tin game...
+            </p>
+          </div>
+
+          <!-- Tabs Section -->
+          <div
+            style="
+              background: var(--surface-1);
+              border: 1px solid var(--border);
+              border-radius: var(--radius-lg);
+              overflow: hidden;
+            "
+          >
+            <!-- Tab Headers -->
+            <div
+              style="
+                display: flex;
+                border-bottom: 1px solid var(--border);
+                background: var(--surface-0);
+                overflow-x: auto;
+              "
+            >
+              <button
+                id="tab-specs-btn"
+                onclick="switchTab('specs')"
+                class="pd-tab-btn active"
+              >
+                Thông số kỹ thuật
+              </button>
+              <button
+                id="tab-reviews-btn"
+                onclick="switchTab('reviews')"
+                class="pd-tab-btn"
+              >
+                Đánh giá (0)
+              </button>
+              <button
+                id="tab-faq-btn"
+                onclick="switchTab('faq')"
+                class="pd-tab-btn"
+              >
+                FAQ
+              </button>
+            </div>
+
+            <!-- Tab Content Panels -->
+            <div style="padding: 28px">
+              <!-- Specs Tab -->
+              <div id="tab-specs" class="tab-panel">
+                <table
+                  style="
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-size: 14px;
+                  "
+                >
+                  <tbody>
+                    <tr style="border-bottom: 1px solid var(--border)">
+                      <td
+                        style="
+                          padding: 12px 0;
+                          font-weight: 600;
+                          color: var(--text-3);
+                          width: 200px;
+                        "
+                      >
+                        Nhà phát hành
+                      </td>
+                      <td
+                        id="spec-brand"
+                        style="padding: 12px 0; color: var(--text-1)"
+                      >
+                        Đang tải...
+                      </td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid var(--border)">
+                      <td
+                        style="
+                          padding: 12px 0;
+                          font-weight: 600;
+                          color: var(--text-3);
+                        "
+                      >
+                        Thể loại
+                      </td>
+                      <td
+                        id="spec-category"
+                        style="padding: 12px 0; color: var(--text-1)"
+                      >
+                        Đang tải...
+                      </td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid var(--border)">
+                      <td
+                        style="
+                          padding: 12px 0;
+                          font-weight: 600;
+                          color: var(--text-3);
+                        "
+                      >
+                        Mã game
+                      </td>
+                      <td
+                        id="spec-id"
+                        style="padding: 12px 0; color: var(--text-1)"
+                      >
+                        Đang tải...
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        style="
+                          padding: 12px 0;
+                          font-weight: 600;
+                          color: var(--text-3);
+                          vertical-align: top;
+                        "
+                      >
+                        Thông tin cấu hình XML
+                      </td>
+                      <td
+                        id="spec-xml"
+                        style="
+                          padding: 12px 0;
+                          color: var(--text-3);
+                          font-family: monospace;
+                          font-size: 12px;
+                          white-space: pre-wrap;
+                          background: var(--surface-0);
+                          border-radius: 4px;
+                          padding: 8px;
+                        "
+                      >
+                        Chưa có dữ liệu
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Reviews Tab -->
+              <div id="tab-reviews" class="tab-panel hidden">
+                <!-- Review Input Form (Requires Login) -->
+                <div
+                  id="review-form-container"
+                  style="
+                    background: var(--surface-0);
+                    border: 1px solid var(--border);
+                    border-radius: var(--radius-md);
+                    padding: 20px;
+                    margin-bottom: 28px;
+                  "
+                >
+                  <p
+                    style="
+                      font-size: 13px;
+                      color: var(--text-3);
+                      margin: 0 0 12px 0;
+                    "
+                  >
+                    Bạn cần đăng nhập để gửi đánh giá.
+                  </p>
+                  <a
+                    href="login.html"
+                    class="btn btn-outline"
+                    style="
+                      height: 36px;
+                      padding: 0 14px;
+                      font-size: 13px;
+                      font-weight: 600;
+                      text-decoration: none;
+                    "
+                    >Đăng nhập ngay</a
+                  >
+                </div>
+
+                <!-- Reviews list -->
+                <div
+                  id="reviews-list"
+                  style="display: flex; flex-direction: column; gap: 14px"
+                >
+                  <div class="text-center text-gray-500 py-6">
+                    Đang tải đánh giá...
+                  </div>
+                </div>
+              </div>
+
+              <!-- FAQ Tab -->
+              <div id="tab-faq" class="tab-panel hidden">
+                <div style="display: flex; flex-direction: column; gap: 12px">
+                  <details class="pd-faq-item" open>
+                    <summary>
+                      <h4
+                        style="
+                          font-size: 15px;
+                          font-weight: 700;
+                          color: var(--text-1);
+                          margin: 0;
+                        "
+                      >
+                        Game này có hỗ trợ kích hoạt toàn cầu không?
+                      </h4>
+                      <svg
+                        class="pd-faq-icon w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M12 4.5v15m7.5-7.5h-15"
+                        />
+                      </svg>
+                    </summary>
+                    <p
+                      style="
+                        font-size: 14px;
+                        color: var(--text-2);
+                        margin: 10px 0 0 0;
+                      "
+                    >
+                      Tất cả các game bán tại GameLab đều được cấp mã key kích
+                      hoạt chính hãng và có thể kích hoạt trên Steam/Epic Games.
+                    </p>
+                  </details>
+                  <div style="border-top: 1px solid var(--border)"></div>
+                  <details class="pd-faq-item">
+                    <summary>
+                      <h4
+                        style="
+                          font-size: 15px;
+                          font-weight: 700;
+                          color: var(--text-1);
+                          margin: 0;
+                        "
+                      >
+                        Có thể hoàn tiền sau khi mua key game không?
+                      </h4>
+                      <svg
+                        class="pd-faq-icon w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M12 4.5v15m7.5-7.5h-15"
+                        />
+                      </svg>
+                    </summary>
+                    <p
+                      style="
+                        font-size: 14px;
+                        color: var(--text-2);
+                        margin: 10px 0 0 0;
+                      "
+                    >
+                      Vì tính chất sản phẩm kỹ thuật số, key game đã mua không
+                      thể hoàn lại hoặc đổi trả trừ trường hợp key bị lỗi hệ
+                      thống.
+                    </p>
+                  </details>
+                  <div style="border-top: 1px solid var(--border)"></div>
+                  <details class="pd-faq-item">
+                    <summary>
+                      <h4
+                        style="
+                          font-size: 15px;
+                          font-weight: 700;
+                          color: var(--text-1);
+                          margin: 0;
+                        "
+                      >
+                        Tôi nhận key game bằng cách nào?
+                      </h4>
+                      <svg
+                        class="pd-faq-icon w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M12 4.5v15m7.5-7.5h-15"
+                        />
+                      </svg>
+                    </summary>
+                    <p
+                      style="
+                        font-size: 14px;
+                        color: var(--text-2);
+                        margin: 10px 0 0 0;
+                      "
+                    >
+                      Key game sẽ được hiển thị ngay lập tức trong phần chi tiết
+                      đơn hàng và gửi qua email của bạn sau khi thanh toán thành
+                      công.
+                    </p>
+                  </details>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar: purchase box (sticky, Steam/Epic buy-panel style) -->
+        <aside>
+          <div
+            class="pd-sidebar-sticky"
+            style="
+              background: var(--surface-1);
+              border: 1px solid var(--border);
+              border-radius: var(--radius-lg);
+              padding: 24px;
+              display: flex;
+              flex-direction: column;
+              gap: 20px;
+            "
+          >
+            <div>
+              <span
+                style="
+                  font-size: 11px;
+                  font-weight: 700;
+                  color: var(--text-3);
+                  text-transform: uppercase;
+                  letter-spacing: 0.06em;
+                "
+                >Giá bán</span
+              >
+              <div style="margin-top: 4px">
+                <span
+                  id="product-price-val"
+                  data-price="0"
+                  style="
+                    font-size: 30px;
+                    font-weight: 800;
+                    color: var(--text-1);
+                  "
+                  >$0.00</span
+                >
+              </div>
+            </div>
+
+            <div
+              style="
+                border-top: 1px solid var(--border);
+                padding-top: 20px;
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+              "
+            >
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                "
+              >
+                <label
+                  style="
+                    font-size: 14px;
+                    font-weight: 600;
+                    color: var(--text-2);
+                  "
+                  >Số lượng</label
+                >
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    border: 1px solid var(--border);
+                    border-radius: var(--radius-sm);
+                    overflow: hidden;
+                    width: 128px;
+                    height: 38px;
+                    background: var(--surface-0);
+                  "
+                >
+                  <button onclick="changeQty(-1)" class="pd-qty-btn">−</button>
+                  <input
+                    type="text"
+                    id="quantity-select"
+                    value="1"
+                    readonly
+                    style="
+                      width: 48px;
+                      height: 100%;
+                      border: none;
+                      outline: none;
+                      text-align: center;
+                      font-size: 14px;
+                      font-weight: 600;
+                      color: var(--text-1);
+                      background: transparent;
+                    "
+                  />
+                  <button onclick="changeQty(1)" class="pd-qty-btn">+</button>
+                </div>
+              </div>
+
+              <button
+                id="btn-add-to-cart"
+                onclick="handleAddToCart()"
+                style="
+                  width: 100%;
+                  display: inline-flex;
+                  align-items: center;
+                  justify-content: center;
+                  gap: 8px;
+                  font-size: 15px;
+                  font-weight: 700;
+                  border-radius: var(--radius-sm);
+                  cursor: pointer;
+                  padding: 0 24px;
+                  height: 46px;
+                  border: none;
+                  background: var(--brand);
+                  color: white;
+                  font-family: inherit;
+                  transition: background 0.15s;
+                "
+                onmouseover="this.style.background = 'var(--brand-dark)'"
+                onmouseout="this.style.background = 'var(--brand)'"
+              >
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
+                  ></path>
+                </svg>
+                Thêm vào giỏ hàng
+              </button>
+            </div>
+
+            <div
+              style="
+                border-top: 1px solid var(--border);
+                padding-top: 16px;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                font-size: 13px;
+              "
+            >
+              <div style="display: flex; justify-content: space-between">
+                <span style="color: var(--text-3)">Key kích hoạt</span>
+                <span style="color: var(--text-1); font-weight: 600"
+                  >Steam / Epic</span
+                >
+              </div>
+              <div style="display: flex; justify-content: space-between">
+                <span style="color: var(--text-3)">Giao hàng</span>
+                <span style="color: var(--text-1); font-weight: 600"
+                  >Tức thì qua email</span
+                >
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <!-- Footer placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+    <script src="/assets/js/toast.js"></script>
+    <script src="/assets/js/auth.js"></script>
+    <script src="/assets/js/cart.js"></script>
+    <script>
+      const API = "http://localhost:3000/api";
+      const BASE_URL = "http://localhost:3000";
+
+      let currentProduct = null;
+      let productId = null;
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        await includeComponent(
+          "#navbar-placeholder",
+          "/components/navbar.html",
+        );
+        await includeComponent(
+          "#footer-placeholder",
+          "/components/footer.html",
+        );
+
+        const urlParams = new URLSearchParams(window.location.search);
+        productId = urlParams.get("id");
+
+        if (!productId) {
+          alert("Không tìm thấy ID game.");
+          window.location.href = "index.html";
+          return;
+        }
+
+        await loadProductDetails();
+        await loadReviews();
+        setupReviewForm();
+      });
+
+      async function loadProductDetails() {
+        try {
+          const res = await fetch(`${API}/products/search`);
+          if (!res.ok) throw new Error("Failed to fetch products list");
+          const products = await res.json();
+
+          currentProduct = products.find((p) => p.id == productId);
+          if (!currentProduct) {
+            throw new Error("Product not found");
+          }
+
+          // Render fields
+          document.getElementById("breadcrumb-product-name").textContent =
+            currentProduct.name;
+          document.getElementById("product-name").textContent =
+            currentProduct.name;
+
+          // Render category & stock status badges
+          document.getElementById("product-cat-badge").textContent =
+            currentProduct.category || "THƯƠNG HIỆU";
+
+          const stockBadge = document.getElementById("product-stock-badge");
+          if (currentProduct.stock > 0) {
+            stockBadge.textContent = `Còn hàng (${currentProduct.stock})`;
+            stockBadge.className = "badge badge-green";
+          } else {
+            stockBadge.textContent = "Hết hàng";
+            stockBadge.className = "badge badge-red";
+            document.getElementById("btn-add-to-cart").disabled = true;
+            document.getElementById("btn-add-to-cart").style.opacity = "0.5";
+            document.getElementById("btn-add-to-cart").style.cursor =
+              "not-allowed";
+          }
+
+          // Price formatting
+          const priceValEl = document.getElementById("product-price-val");
+          priceValEl.textContent = `$${parseFloat(currentProduct.price).toLocaleString("en-US")}`;
+          priceValEl.setAttribute("data-price", currentProduct.price); // Price is saved in DOM attribute for addToCart to read
+
+          // Description
+          document.getElementById("product-desc").textContent =
+            currentProduct.description ||
+            "Chưa có thông tin mô tả chi tiết cho sản phẩm này.";
+
+          // Image
+          const imgDisplay = document.getElementById("product-img-display");
+          const imgPlaceholder = document.getElementById(
+            "product-img-placeholder",
+          );
+          if (currentProduct.image_path) {
+            const imgUrl = currentProduct.image_path.startsWith("http")
+              ? currentProduct.image_path
+              : BASE_URL + currentProduct.image_path;
+            imgDisplay.src = imgUrl;
+            imgDisplay.style.display = "block";
+            imgPlaceholder.style.display = "none";
+          }
+
+          // Specifications
+          document.getElementById("spec-brand").textContent =
+            currentProduct.brand || "N/A";
+          document.getElementById("spec-category").textContent =
+            currentProduct.category || "N/A";
+          document.getElementById("spec-id").textContent =
+            `#PRD-${currentProduct.id}`;
+          document.getElementById("spec-xml").textContent =
+            currentProduct.metadata_xml || "Không có dữ liệu bổ sung";
+        } catch (err) {
+          console.error(err);
+          document.getElementById("product-name").textContent =
+            "Lỗi tải thông tin";
+          document.getElementById("product-desc").textContent =
+            "Không thể lấy thông tin chi tiết cho sản phẩm này.";
+        }
+      }
+
+      function changeQty(amount) {
+        const qtyInput = document.getElementById("quantity-select");
+        let val = parseInt(qtyInput.value) || 1;
+        val += amount;
+        if (val < 1) val = 1;
+        qtyInput.value = val;
+      }
+
+      function handleAddToCart() {
+        if (!currentProduct) return;
+
+        // Insecure price retrieval from DOM
+        const priceVal = document
+          .getElementById("product-price-val")
+          .getAttribute("data-price");
+        const qty =
+          parseInt(document.getElementById("quantity-select").value) || 1;
+        const imgPath = currentProduct.image_path
+          ? currentProduct.image_path.startsWith("http")
+            ? currentProduct.image_path
+            : BASE_URL + currentProduct.image_path
+          : "";
+
+        addToCart(productId, currentProduct.name, priceVal, imgPath, qty);
+      }
+
+      function switchTab(tabId) {
+        // Hide all panels
+        document.querySelectorAll(".tab-panel").forEach((panel) => {
+          panel.classList.add("hidden");
+        });
+        // Show active panel
+        document.getElementById(`tab-${tabId}`).classList.remove("hidden");
+
+        // Update button styling
+        const tabs = ["specs", "reviews", "faq"];
+        tabs.forEach((t) => {
+          const btn = document.getElementById(`tab-${t}-btn`);
+          if (t === tabId) {
+            btn.classList.add("active");
+          } else {
+            btn.classList.remove("active");
+          }
+        });
+      }
+
+      async function loadReviews() {
+        const reviewsList = document.getElementById("reviews-list");
+        try {
+          const res = await fetch(`${API}/products/${productId}/reviews`);
+          if (!res.ok) throw new Error("Fetch reviews error");
+          const reviews = await res.json();
+
+          // Update Tab badge
+          const tabBtn = document.getElementById("tab-reviews-btn");
+          tabBtn.textContent = `Đánh giá (${reviews.length})`;
+
+          if (reviews.length === 0) {
+            reviewsList.innerHTML =
+              '<div class="text-center text-gray-500 py-6">Chưa có đánh giá nào cho sản phẩm này. Hãy là người đầu tiên!</div>';
+            return;
+          }
+
+          reviewsList.innerHTML = "";
+          reviews.forEach((review) => {
+            const author = review.username || "Khách ẩn danh";
+            const avatarLetter = author.charAt(0).toUpperCase();
+
+            const card = document.createElement("div");
+            card.className = "pd-review-card";
+
+            card.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <div style="width:32px; height:32px; border-radius:50%; background:var(--brand-lt); color:var(--brand); display:flex; align-items:center; justify-content:center; font-weight:600; font-size:13px;">
+                  ${avatarLetter}
+                </div>
+                <div>
+                  <div style="font-size:14px; font-weight:600; color:var(--text-1);">${author}</div>
+                  <div style="font-size:11px; color:var(--text-3);">Mã số: #${review.user_id}</div>
+                </div>
+              </div>
+              <span style="font-size:11px; color:var(--text-4);">Đánh giá #${review.id}</span>
+            </div>
+            <p style="font-size:13px; color:var(--text-2); line-height:1.5; margin:0; padding-left:42px;">${review.content}</p>
+          `;
+            reviewsList.appendChild(card);
+          });
+        } catch (err) {
+          console.error(err);
+          reviewsList.innerHTML =
+            '<div class="text-center text-red-500 py-6">Không thể tải đánh giá sản phẩm.</div>';
+        }
+      }
+
+      function setupReviewForm() {
+        const token = localStorage.getItem("token");
+        const container = document.getElementById("review-form-container");
+
+        if (token) {
+          container.innerHTML = `
+          <h3 style="font-size: 15px; font-weight: 700; color: var(--text-1); margin-bottom: 12px;">Viết đánh giá của bạn</h3>
+          <form id="review-form">
+            <div style="margin-bottom: 12px;">
+              <textarea
+                id="review-content"
+                rows="3"
+                placeholder="Nhập nội dung đánh giá của bạn ở đây... (hỗ trợ HTML/Markdown)"
+                style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 13px; font-family: inherit; background: var(--surface-1); color: var(--text-1); outline: none; box-sizing: border-box;"
+                required
+              ></textarea>
+            </div>
+            <button
+              type="submit"
+              style="display:inline-flex; align-items:center; justify-content:center; font-size:13px; font-weight:600; border-radius:var(--radius-sm); cursor:pointer; padding:0 16px; height:36px; border:none; background:var(--brand); color:white; font-family:inherit; transition:background .15s;"
+              onmouseover="this.style.background='var(--brand-dark)'"
+              onmouseout="this.style.background='var(--brand)'"
+            >
+              Gửi đánh giá
+            </button>
+          </form>
+        `;
+
+          document
+            .getElementById("review-form")
+            .addEventListener("submit", async (e) => {
+              e.preventDefault();
+              const contentVal =
+                document.getElementById("review-content").value;
+
+              let userId = 2; // Fallback default
+              try {
+                const payload = JSON.parse(atob(token.split(".")[1]));
+                userId = payload.id;
+              } catch (err) {
+                console.error("Error decoding token", err);
+              }
+
+              try {
+                const res = await fetch(
+                  `${API}/products/${productId}/reviews`,
+                  {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                      content: contentVal,
+                      user_id: userId,
+                    }),
+                  },
+                );
+
+                if (!res.ok) throw new Error("Gửi đánh giá thất bại");
+
+                document.getElementById("review-content").value = "";
+                showToast(
+                  "Đánh giá thành công!",
+                  "Ý kiến của bạn đã được lưu lại.",
+                  "success",
+                );
+                await loadReviews();
+              } catch (err) {
+                console.error(err);
+                showToast("Lỗi", err.message, "error");
+              }
+            });
+        }
+      }
+    </script>
+  </body>
+</html>

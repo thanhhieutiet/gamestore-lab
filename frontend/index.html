@@ -1,0 +1,1160 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <script>
+      if (localStorage.getItem("theme") === "light")
+        document.documentElement.classList.add("light");
+      else document.documentElement.classList.remove("light");
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GameLab — Cửa hàng game bản quyền hàng đầu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link href="/assets/css/shoplab.css" rel="stylesheet" />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: { sans: ["Inter", "sans-serif"] },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body
+    style="
+      font-family: &quot;Inter&quot;, sans-serif;
+      background: var(--surface-0);
+      color: var(--text-1);
+      -webkit-font-smoothing: antialiased;
+    "
+  >
+    <!-- Navbar placeholder -->
+    <div id="navbar-placeholder"></div>
+
+    <!-- Main Content wrapper -->
+    <main
+      style="
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 32px 24px;
+        min-height: calc(100vh - 60px - 280px);
+      "
+    >
+      <!-- Hero Banner (Flowbite Carousel) -->
+      <div
+        id="default-carousel"
+        class="relative w-full mb-8"
+        data-carousel="slide"
+      >
+        <!-- Carousel wrapper -->
+        <div class="relative h-56 overflow-hidden rounded-xl md:h-80">
+          <!-- Slide 1: Cyberpunk 2077 -->
+          <div class="hidden duration-700 ease-in-out" data-carousel-item>
+            <div
+              class="flex h-full flex-col justify-center p-8 md:p-12 text-white"
+              style="
+                background-image:
+                  linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
+                  url(&quot;https://www.cyberpunkjacket.com/wp-content/uploads/2023/10/Phantom-Liberty-Banner-001-1.webp&quot;);
+                background-size: cover;
+                background-position: center;
+              "
+            >
+              <span
+                class="bg-yellow-400 text-black text-[11px] font-bold px-3 py-1 rounded-full uppercase w-fit mb-4"
+                >CD Projekt Red</span
+              >
+              <h2 class="text-2xl md:text-4xl font-extrabold mb-2">
+                Cyberpunk 2077: Phantom Liberty
+              </h2>
+              <p class="text-xs md:text-sm text-indigo-100 mb-4 max-w-lg">
+                Kháo khám phá Night City trong chương mở rộng giật gân thể loại
+                điệp viên kinh dị viễn tưởng.
+              </p>
+              <a
+                href="#products-section"
+                class="w-fit bg-yellow-400 text-black hover:bg-yellow-300 transition px-4 py-2 rounded-lg font-bold text-xs"
+                >Mua ngay</a
+              >
+            </div>
+          </div>
+          <!-- Slide 2: Elden Ring -->
+          <div class="hidden duration-700 ease-in-out" data-carousel-item>
+            <div
+              class="flex h-full flex-col justify-center p-8 md:p-12 text-white"
+              style="
+                background-image:
+                  linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+                  url(&quot;https://eip.gg/wp-content/uploads/2024/06/elden-ring-shadow-of-erdtree-now-available-banner.jpg&quot;);
+                background-size: cover;
+                background-position: center;
+              "
+            >
+              <span
+                class="bg-amber-600 text-white text-[11px] font-bold px-3 py-1 rounded-full uppercase w-fit mb-4"
+                >FromSoftware</span
+              >
+              <h2 class="text-2xl md:text-4xl font-extrabold mb-2">
+                ELDEN RING: Shadow of the Erdtree
+              </h2>
+              <p class="text-xs md:text-sm text-gray-300 mb-4 max-w-lg">
+                Bước vào Vùng Đất Bóng Tối để khám phá những bí mật ẩn giấu và
+                chinh phục những á thần hùng mạnh.
+              </p>
+              <a
+                href="#products-section"
+                class="w-fit bg-amber-600 text-white hover:bg-amber-500 transition px-4 py-2 rounded-lg font-bold text-xs"
+                >Xem chi tiết</a
+              >
+            </div>
+          </div>
+          <!-- Slide 3: Black Myth Wukong -->
+          <div class="hidden duration-700 ease-in-out" data-carousel-item>
+            <div
+              class="flex h-full flex-col justify-center p-8 md:p-12 text-white"
+              style="
+                background-image:
+                  linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                  url(&quot;https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmJgChnfDTcuJdTSqD970n23TdIkayVHMMifsEL3MMhpbver2ARN8utuk&s=10&quot;);
+                background-size: cover;
+                background-position: center;
+              "
+            >
+              <span
+                class="bg-emerald-600 text-white text-[11px] font-bold px-3 py-1 rounded-full uppercase w-fit mb-4"
+                >Trending Now</span
+              >
+              <h2 class="text-2xl md:text-4xl font-extrabold mb-2">
+                Black Myth: Wukong
+              </h2>
+              <p class="text-xs md:text-sm text-orange-100 mb-4 max-w-lg">
+                Hóa thân thành Thiên Mệnh Nhân, bắt đầu cuộc hành trình đầy gian
+                truân qua thế giới thần thoại Trung Hoa kỳ vĩ.
+              </p>
+              <a
+                href="#products-section"
+                class="w-fit bg-emerald-600 text-white hover:bg-emerald-500 transition px-4 py-2 rounded-lg font-bold text-xs"
+                >Khám phá</a
+              >
+            </div>
+          </div>
+        </div>
+        <!-- Slider indicators -->
+        <div
+          class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3"
+        >
+          <button
+            type="button"
+            class="w-3 h-3 rounded-full"
+            aria-current="true"
+            aria-label="Slide 1"
+            data-carousel-slide-to="0"
+          ></button>
+          <button
+            type="button"
+            class="w-3 h-3 rounded-full"
+            aria-current="false"
+            aria-label="Slide 2"
+            data-carousel-slide-to="1"
+          ></button>
+          <button
+            type="button"
+            class="w-3 h-3 rounded-full"
+            aria-current="false"
+            aria-label="Slide 3"
+            data-carousel-slide-to="2"
+          ></button>
+        </div>
+        <!-- Slider controls -->
+        <button
+          type="button"
+          class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+          data-carousel-prev
+        >
+          <span
+            class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white"
+          >
+            <svg
+              class="w-3 h-3 text-white"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 6 10"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 1 1 5l4 4"
+              />
+            </svg>
+          </span>
+        </button>
+        <button
+          type="button"
+          class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+          data-carousel-next
+        >
+          <span
+            class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white"
+          >
+            <svg
+              class="w-3 h-3 text-white"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 6 10"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m1 9 4-4-4-4"
+              />
+            </svg>
+          </span>
+        </button>
+      </div>
+
+      <!-- Search Title (DOM XSS point) -->
+      <div id="search-container" class="hidden mb-6">
+        <h2
+          id="search-label"
+          style="font-size: 18px; font-weight: 700; color: var(--text-1)"
+        ></h2>
+      </div>
+
+      <!-- 2-Column Grid -->
+      <div
+        id="products-section"
+        style="display: flex; gap: 32px; align-items: flex-start"
+      >
+        <!-- Left Sidebar (220px) -->
+        <aside class="filter-sidebar" style="width: 220px; flex-shrink: 0">
+          <div class="filter-group" style="margin-bottom: 24px">
+            <div
+              class="filter-group-title"
+              style="
+                font-size: 12px;
+                font-weight: 700;
+                color: var(--text-3);
+                text-transform: uppercase;
+                letter-spacing: 0.07em;
+                margin-bottom: 10px;
+              "
+            >
+              Thể loại
+            </div>
+            <div
+              class="filter-item"
+              style="
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 5px 0;
+              "
+            >
+              <input
+                type="checkbox"
+                id="cat-action"
+                value="Action"
+                class="category-checkbox"
+                style="
+                  accent-color: var(--brand);
+                  width: 15px;
+                  height: 15px;
+                  cursor: pointer;
+                "
+              />
+              <label
+                for="cat-action"
+                style="font-size: 14px; color: var(--text-2); cursor: pointer"
+                >Action</label
+              >
+            </div>
+            <div
+              class="filter-item"
+              style="
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 5px 0;
+              "
+            >
+              <input
+                type="checkbox"
+                id="cat-rpg"
+                value="RPG"
+                class="category-checkbox"
+                style="
+                  accent-color: var(--brand);
+                  width: 15px;
+                  height: 15px;
+                  cursor: pointer;
+                "
+              />
+              <label
+                for="cat-rpg"
+                style="font-size: 14px; color: var(--text-2); cursor: pointer"
+                >RPG</label
+              >
+            </div>
+            <div
+              class="filter-item"
+              style="
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 5px 0;
+              "
+            >
+              <input
+                type="checkbox"
+                id="cat-strategy"
+                value="Strategy"
+                class="category-checkbox"
+                style="
+                  accent-color: var(--brand);
+                  width: 15px;
+                  height: 15px;
+                  cursor: pointer;
+                "
+              />
+              <label
+                for="cat-strategy"
+                style="font-size: 14px; color: var(--text-2); cursor: pointer"
+                >Strategy</label
+              >
+            </div>
+            <div
+              class="filter-item"
+              style="
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 5px 0;
+              "
+            >
+              <input
+                type="checkbox"
+                id="cat-simulation"
+                value="Simulation"
+                class="category-checkbox"
+                style="
+                  accent-color: var(--brand);
+                  width: 15px;
+                  height: 15px;
+                  cursor: pointer;
+                "
+              />
+              <label
+                for="cat-simulation"
+                style="font-size: 14px; color: var(--text-2); cursor: pointer"
+                >Simulation</label
+              >
+            </div>
+          </div>
+
+          <hr
+            style="
+              border: none;
+              border-top: 1px solid var(--border);
+              margin: 20px 0;
+            "
+          />
+
+          <div class="filter-group" style="margin-bottom: 24px">
+            <div
+              class="filter-group-title"
+              style="
+                font-size: 12px;
+                font-weight: 700;
+                color: var(--text-3);
+                text-transform: uppercase;
+                letter-spacing: 0.07em;
+                margin-bottom: 10px;
+              "
+            >
+              Nhà phát hành
+            </div>
+            <div
+              class="filter-item"
+              style="
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 5px 0;
+              "
+            >
+              <input
+                type="checkbox"
+                id="brand-cdpr"
+                value="CD Projekt Red"
+                class="brand-checkbox"
+                style="
+                  accent-color: var(--brand);
+                  width: 15px;
+                  height: 15px;
+                  cursor: pointer;
+                "
+              />
+              <label
+                for="brand-cdpr"
+                style="font-size: 14px; color: var(--text-2); cursor: pointer"
+                >CD Projekt Red</label
+              >
+            </div>
+            <div
+              class="filter-item"
+              style="
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 5px 0;
+              "
+            >
+              <input
+                type="checkbox"
+                id="brand-rockstar"
+                value="Rockstar Games"
+                class="brand-checkbox"
+                style="
+                  accent-color: var(--brand);
+                  width: 15px;
+                  height: 15px;
+                  cursor: pointer;
+                "
+              />
+              <label
+                for="brand-rockstar"
+                style="font-size: 14px; color: var(--text-2); cursor: pointer"
+                >Rockstar Games</label
+              >
+            </div>
+            <div
+              class="filter-item"
+              style="
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 5px 0;
+              "
+            >
+              <input
+                type="checkbox"
+                id="brand-fromsoft"
+                value="FromSoftware"
+                class="brand-checkbox"
+                style="
+                  accent-color: var(--brand);
+                  width: 15px;
+                  height: 15px;
+                  cursor: pointer;
+                "
+              />
+              <label
+                for="brand-fromsoft"
+                style="font-size: 14px; color: var(--text-2); cursor: pointer"
+                >FromSoftware</label
+              >
+            </div>
+            <div
+              class="filter-item"
+              style="
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 5px 0;
+              "
+            >
+              <input
+                type="checkbox"
+                id="brand-valve"
+                value="Valve"
+                class="brand-checkbox"
+                style="
+                  accent-color: var(--brand);
+                  width: 15px;
+                  height: 15px;
+                  cursor: pointer;
+                "
+              />
+              <label
+                for="brand-valve"
+                style="font-size: 14px; color: var(--text-2); cursor: pointer"
+                >Valve</label
+              >
+            </div>
+            <div
+              class="filter-item"
+              style="
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 5px 0;
+              "
+            >
+              <input
+                type="checkbox"
+                id="brand-xbox"
+                value="Xbox Game Studios"
+                class="brand-checkbox"
+                style="
+                  accent-color: var(--brand);
+                  width: 15px;
+                  height: 15px;
+                  cursor: pointer;
+                "
+              />
+              <label
+                for="brand-xbox"
+                style="font-size: 14px; color: var(--text-2); cursor: pointer"
+                >Xbox Game Studios</label
+              >
+            </div>
+            <div
+              class="filter-item"
+              style="
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 5px 0;
+              "
+            >
+              <input
+                type="checkbox"
+                id="brand-2k"
+                value="2K Games"
+                class="brand-checkbox"
+                style="
+                  accent-color: var(--brand);
+                  width: 15px;
+                  height: 15px;
+                  cursor: pointer;
+                "
+              />
+              <label
+                for="brand-2k"
+                style="font-size: 14px; color: var(--text-2); cursor: pointer"
+                >2K Games</label
+              >
+            </div>
+          </div>
+
+          <hr
+            style="
+              border: none;
+              border-top: 1px solid var(--border);
+              margin: 20px 0;
+            "
+          />
+
+          <div class="filter-group" style="margin-bottom: 24px">
+            <div
+              class="filter-group-title"
+              style="
+                font-size: 12px;
+                font-weight: 700;
+                color: var(--text-3);
+                text-transform: uppercase;
+                letter-spacing: 0.07em;
+                margin-bottom: 10px;
+              "
+            >
+              Khoảng giá
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center">
+              <input
+                type="number"
+                id="price-min"
+                placeholder="Tối thiểu"
+                style="
+                  width: 50%;
+                  height: 36px;
+                  padding: 0 10px;
+                  border: 1px solid var(--border);
+                  border-radius: var(--radius-sm);
+                  font-size: 13px;
+                  font-family: inherit;
+                  background: var(--surface-1);
+                  color: var(--text-1);
+                "
+              />
+              <span style="color: var(--text-3)">—</span>
+              <input
+                type="number"
+                id="price-max"
+                placeholder="Tối đa"
+                style="
+                  width: 50%;
+                  height: 36px;
+                  padding: 0 10px;
+                  border: 1px solid var(--border);
+                  border-radius: var(--radius-sm);
+                  font-size: 13px;
+                  font-family: inherit;
+                  background: var(--surface-1);
+                  color: var(--text-1);
+                "
+              />
+            </div>
+          </div>
+
+          <div style="margin-top: 24px">
+            <button
+              id="btn-apply-filters"
+              onclick="applyFilters()"
+              style="
+                width: 100%;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 14px;
+                font-weight: 600;
+                border-radius: var(--radius-sm);
+                cursor: pointer;
+                padding: 0 16px;
+                height: 38px;
+                border: none;
+                background: var(--brand);
+                color: white;
+                font-family: inherit;
+                transition: background 0.15s;
+              "
+              onmouseover="this.style.background = 'var(--brand-dark)'"
+              onmouseout="this.style.background = 'var(--brand)'"
+            >
+              Áp dụng bộ lọc
+            </button>
+          </div>
+        </aside>
+
+        <!-- Right Grid (flex-1) -->
+        <div style="flex: 1">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 20px;
+            "
+          >
+            <div>
+              <div
+                class="section-label"
+                style="
+                  font-size: 11px;
+                  font-weight: 700;
+                  letter-spacing: 0.08em;
+                  text-transform: uppercase;
+                  color: var(--text-4);
+                  margin-bottom: 4px;
+                "
+              >
+                Danh sách sản phẩm
+              </div>
+              <h2
+                id="main-section-title"
+                class="section-title"
+                style="
+                  font-size: 22px;
+                  font-weight: 700;
+                  color: var(--text-1);
+                  letter-spacing: -0.3px;
+                "
+              >
+                Tất cả sản phẩm
+              </h2>
+            </div>
+          </div>
+
+          <!-- Products Grid -->
+          <div
+            id="product-grid"
+            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 min-h-[300px]"
+          >
+            <!-- Loading state -->
+            <div class="col-span-full flex justify-center items-center py-12">
+              <div
+                class="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"
+              ></div>
+            </div>
+          </div>
+
+          <!-- Pagination Footer -->
+          <div
+            id="pagination-container"
+            class="flex justify-center items-center gap-2 mt-8"
+          >
+            <!-- Render pagination links: « 1 2 3 4 5 » -->
+          </div>
+        </div>
+      </div>
+
+      <hr
+        style="
+          border: none;
+          border-top: 1px solid var(--border);
+          margin: 48px 0 32px 0;
+        "
+      />
+
+      <!-- Featured Products Row -->
+      <div class="mb-12">
+        <div class="flex justify-between items-center mb-6">
+          <h3
+            style="
+              font-size: 20px;
+              font-weight: 700;
+              color: var(--text-1);
+              letter-spacing: -0.3px;
+            "
+          >
+            Sản phẩm nổi bật
+          </h3>
+        </div>
+        <div
+          id="featured-scroll"
+          class="flex gap-4 overflow-x-auto pb-4"
+          style="scrollbar-width: thin; -ms-overflow-style: none"
+        >
+          <!-- Dynamic loading of featured products -->
+          <div class="flex justify-center items-center py-6 w-full">
+            <div
+              class="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-600"
+            ></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Latest Products Row -->
+      <div class="mb-12">
+        <div class="flex justify-between items-center mb-6">
+          <h3
+            style="
+              font-size: 20px;
+              font-weight: 700;
+              color: var(--text-1);
+              letter-spacing: -0.3px;
+            "
+          >
+            Mới nhất
+          </h3>
+        </div>
+        <div
+          id="latest-scroll"
+          class="flex gap-4 overflow-x-auto pb-4"
+          style="scrollbar-width: thin; -ms-overflow-style: none"
+        >
+          <!-- Dynamic loading of latest products -->
+          <div class="flex justify-center items-center py-6 w-full">
+            <div
+              class="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-600"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+    <script src="/assets/js/toast.js"></script>
+    <script src="/assets/js/auth.js"></script>
+    <script src="/assets/js/cart.js"></script>
+    <script>
+      const API = "http://localhost:3000/api";
+      const BASE_URL = "http://localhost:3000";
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        await includeComponent(
+          "#navbar-placeholder",
+          "/components/navbar.html",
+        );
+        await includeComponent(
+          "#footer-placeholder",
+          "/components/footer.html",
+        );
+
+        // Initialize layout based on query parameters
+        initFiltersFromUrl();
+        await fetchMainProducts();
+        await fetchSecondaryProducts();
+      });
+
+      function initFiltersFromUrl() {
+        const params = new URLSearchParams(window.location.search);
+
+        // Search query
+        const q = params.get("q");
+        if (q !== null) {
+          document
+            .getElementById("search-container")
+            .classList.remove("hidden");
+          // DOM XSS as requested:
+          document.getElementById("search-label").innerHTML =
+            "Kết quả tìm kiếm cho: " + q;
+          document.getElementById("main-section-title").textContent =
+            "Kết quả tìm kiếm";
+
+          // Populate navbar search if loaded
+          setTimeout(() => {
+            const navSearch = document.getElementById("navbar-search");
+            if (navSearch) navSearch.value = q;
+          }, 100);
+        }
+
+        // Categories
+        const categories = params.getAll("category");
+        categories.forEach((cat) => {
+          const checkbox = document.querySelector(
+            `.category-checkbox[value="${cat}"]`,
+          );
+          if (checkbox) checkbox.checked = true;
+        });
+
+        // Brands
+        const brands = params.getAll("brand");
+        brands.forEach((br) => {
+          const checkbox = document.querySelector(
+            `.brand-checkbox[value="${br}"]`,
+          );
+          if (checkbox) checkbox.checked = true;
+        });
+
+        // Price min/max
+        if (params.get("minPrice")) {
+          document.getElementById("price-min").value = params.get("minPrice");
+        }
+        if (params.get("maxPrice")) {
+          document.getElementById("price-max").value = params.get("maxPrice");
+        }
+      }
+
+      async function fetchMainProducts() {
+        const params = new URLSearchParams(window.location.search);
+        const q = params.get("q");
+
+        const grid = document.getElementById("product-grid");
+        grid.innerHTML = `
+        <div class="col-span-full flex justify-center items-center py-12">
+          <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+        </div>
+      `;
+
+        try {
+          let products = [];
+          if (q !== null) {
+            // If searching, fetch from search endpoint
+            const res = await fetch(
+              `${API}/products/search?q=${encodeURIComponent(q)}`,
+            );
+            if (!res.ok) throw new Error("Search failed");
+            products = await res.json();
+
+            // Apply filters client-side on search results to support categories/brands/price when searching
+            const filterCategories = params.getAll("category");
+            const filterBrands = params.getAll("brand");
+            const minP = parseFloat(params.get("minPrice")) || 0;
+            const maxP = parseFloat(params.get("maxPrice")) || Infinity;
+
+            products = products.filter((p) => {
+              if (
+                filterCategories.length > 0 &&
+                !filterCategories.includes(p.category)
+              )
+                return false;
+              if (filterBrands.length > 0 && !filterBrands.includes(p.brand))
+                return false;
+              if (p.price < minP || p.price > maxP) return false;
+              return true;
+            });
+          } else {
+            // Otherwise, fetch from filtered products endpoint
+            // Re-serialize all search parameters to pass to GET /api/products
+            const queryParams = new URLSearchParams();
+
+            const filterCategories = params.getAll("category");
+            filterCategories.forEach((cat) =>
+              queryParams.append("category", cat),
+            );
+
+            const filterBrands = params.getAll("brand");
+            filterBrands.forEach((br) => queryParams.append("brand", br));
+
+            if (params.get("minPrice"))
+              queryParams.set("minPrice", params.get("minPrice"));
+            if (params.get("maxPrice"))
+              queryParams.set("maxPrice", params.get("maxPrice"));
+
+            const page = params.get("page") || "1";
+            queryParams.set("page", page);
+            queryParams.set("limit", "6"); // Match pagination limit
+
+            const res = await fetch(
+              `${API}/products?${queryParams.toString()}`,
+            );
+            if (!res.ok) throw new Error("Fetch products failed");
+            products = await res.json();
+          }
+
+          renderProductsGrid(products);
+          renderPagination();
+        } catch (err) {
+          console.error(err);
+          grid.innerHTML = `
+          <div class="col-span-full text-center text-red-500 py-12">
+            Không thể tải danh sách sản phẩm. Vui lòng kiểm tra lại.
+          </div>
+        `;
+        }
+      }
+
+      function renderProductsGrid(products) {
+        const grid = document.getElementById("product-grid");
+        if (products.length === 0) {
+          grid.innerHTML = `
+          <div class="col-span-full text-center text-gray-500 py-12">
+            Không tìm thấy sản phẩm nào phù hợp.
+          </div>
+        `;
+          return;
+        }
+
+        grid.innerHTML = "";
+        products.forEach((product) => {
+          const imgPath = product.image_path
+            ? product.image_path.startsWith("http")
+              ? product.image_path
+              : BASE_URL + product.image_path
+            : "https://picsum.photos/seed/" + product.id + "/400/300";
+          const formattedPrice = parseFloat(product.price).toLocaleString(
+            "en-US",
+          );
+
+          // Out of stock opacity styling
+          const isOutOfStock = product.stock <= 0;
+          const opacityStyle = isOutOfStock ? "opacity: 0.75" : "";
+          const badgeHTML = isOutOfStock
+            ? `<span class="product-badge" style="position: absolute; top: 10px; left: 10px; background: #6b7280; color: white; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 6px;">Hết hàng</span>`
+            : product.price > 1000
+              ? `<span class="product-badge" style="position: absolute; top: 10px; left: 10px; background: var(--accent); color: white; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 6px;">Bán chạy</span>`
+              : "";
+
+          const card = document.createElement("div");
+          card.className = "product-card";
+          card.style.cssText = opacityStyle;
+          card.innerHTML = `
+          <div class="product-img" style="background: var(--surface-0); aspect-ratio: 4/3; overflow: hidden; display: flex; align-items: center; justify-content: center; position: relative;">
+            <img src="${imgPath}" alt="${product.name}" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s;" />
+            ${badgeHTML}
+          </div>
+          <div class="product-body" style="padding: 16px; flex: 1; display: flex; flex-direction: column;">
+            <div class="product-category" style="font-size: 11px; font-weight: 600; color: var(--brand); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">${product.brand || "Thương hiệu"}</div>
+            <a href="product.html?id=${product.id}" style="text-decoration:none;">
+              <div class="product-name" style="font-size: 15px; font-weight: 600; color: var(--text-1); line-height: 1.4; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${product.name}</div>
+            </a>
+            <div class="product-desc" style="font-size: 13px; color: var(--text-3); line-height: 1.5; flex: 1; margin-bottom: 14px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${product.description || "Chưa có mô tả chi tiết."}</div>
+            <div class="product-footer" style="display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 1px solid var(--border);">
+              <div>
+                <span class="product-price" style="font-size: 18px; font-weight: 700; color: var(--text-1);">$${formattedPrice}</span>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <a href="product.html?id=${product.id}" class="btn btn-outline" style="height: 34px; padding: 0 10px; font-size: 12px; display: flex; align-items: center; border-radius: 8px;">Chi tiết</a>
+                <button 
+                  class="btn-add-cart" 
+                  data-id="${product.id}" 
+                  data-name="${product.name}" 
+                  data-price="${product.price}" 
+                  data-image="${imgPath}"
+                  onclick="handleAddToCartClick(this)"
+                  title="Thêm vào giỏ"
+                  style="width: 34px; height: 34px; border-radius: 8px; background: var(--brand-lt); color: var(--brand); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s, transform 0.1s;"
+                  ${isOutOfStock ? 'disabled style="opacity: 0.4; cursor: not-allowed"' : ""}
+                >
+                  <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+          grid.appendChild(card);
+        });
+      }
+
+      function handleAddToCartClick(btn) {
+        // Insecure price parameter reads directly from DOM dataset (allowing price bypass)
+        const id = btn.getAttribute("data-id");
+        const name = btn.getAttribute("data-name");
+        const price = btn.getAttribute("data-price");
+        const image = btn.getAttribute("data-image");
+        addToCart(id, name, price, image);
+      }
+
+      function renderPagination() {
+        const container = document.getElementById("pagination-container");
+        const params = new URLSearchParams(window.location.search);
+
+        // If we are searching, hide/disable pagination or simplify it since the search API doesn't support pagination directly
+        if (params.get("q") !== null) {
+          container.innerHTML = "";
+          return;
+        }
+
+        const currentPage = parseInt(params.get("page")) || 1;
+
+        let html = "";
+
+        // Left double arrow
+        const prevPage = Math.max(1, currentPage - 1);
+        html += `<button onclick="changePage(${prevPage})" class="btn btn-outline" style="height:32px; width:32px; padding:0; display:flex; justify-content:center; align-items:center; border-radius:6px; font-weight:bold;">«</button>`;
+
+        // Pages 1 to 5
+        for (let i = 1; i <= 5; i++) {
+          const isActive = currentPage === i;
+          const activeStyle = isActive
+            ? "background: var(--brand); color: white; border-color: var(--brand);"
+            : "";
+          html += `<button onclick="changePage(${i})" class="btn btn-outline" style="height:32px; width:32px; padding:0; display:flex; justify-content:center; align-items:center; border-radius:6px; font-weight:bold; ${activeStyle}">${i}</button>`;
+        }
+
+        // Right double arrow
+        const nextPage = currentPage + 1;
+        html += `<button onclick="changePage(${nextPage})" class="btn btn-outline" style="height:32px; width:32px; padding:0; display:flex; justify-content:center; align-items:center; border-radius:6px; font-weight:bold;">»</button>`;
+
+        container.innerHTML = html;
+      }
+
+      function changePage(pageNumber) {
+        const url = new URL(window.location.href);
+        url.searchParams.set("page", pageNumber);
+        window.location.href = url.pathname + url.search;
+      }
+
+      function applyFilters() {
+        const url = new URL(window.location.href);
+        url.searchParams.delete("category");
+        url.searchParams.delete("brand");
+        url.searchParams.delete("q"); // Clear search when filter sidebar is manually applied
+
+        // Gather selected categories
+        const categoryCheckboxes = document.querySelectorAll(
+          ".category-checkbox:checked",
+        );
+        categoryCheckboxes.forEach((cb) => {
+          url.searchParams.append("category", cb.value);
+        });
+
+        // Gather selected brands
+        const brandCheckboxes = document.querySelectorAll(
+          ".brand-checkbox:checked",
+        );
+        brandCheckboxes.forEach((cb) => {
+          url.searchParams.append("brand", cb.value);
+        });
+
+        // Min/Max price
+        const minP = document.getElementById("price-min").value.trim();
+        const maxP = document.getElementById("price-max").value.trim();
+
+        if (minP) url.searchParams.set("minPrice", minP);
+        else url.searchParams.delete("minPrice");
+
+        if (maxP) url.searchParams.set("maxPrice", maxP);
+        else url.searchParams.delete("maxPrice");
+
+        // Reset to page 1 when filter changes
+        url.searchParams.set("page", "1");
+
+        window.location.href = url.pathname + url.search;
+      }
+
+      async function fetchSecondaryProducts() {
+        try {
+          const res = await fetch(`${API}/products?limit=8`);
+          if (!res.ok) throw new Error("Failed to fetch secondary products");
+          const products = await res.json();
+
+          // Render Featured Products (e.g. reverse list or high-priced)
+          const featuredScroll = document.getElementById("featured-scroll");
+          featuredScroll.innerHTML = "";
+
+          const featuredProducts = [...products].sort(
+            (a, b) => b.price - a.price,
+          );
+          featuredProducts.forEach((product) => {
+            featuredScroll.appendChild(createScrollCard(product));
+          });
+
+          // Render Latest Products (e.g. standard seed order or ID descending)
+          const latestScroll = document.getElementById("latest-scroll");
+          latestScroll.innerHTML = "";
+          const latestProducts = [...products].sort((a, b) => b.id - a.id);
+          latestProducts.forEach((product) => {
+            latestScroll.appendChild(createScrollCard(product));
+          });
+        } catch (err) {
+          console.error(err);
+        }
+      }
+
+      function createScrollCard(product) {
+        const imgPath = product.image_path
+          ? product.image_path.startsWith("http")
+            ? product.image_path
+            : BASE_URL + product.image_path
+          : "https://picsum.photos/seed/" + product.id + "/400/300";
+        const formattedPrice = parseFloat(product.price).toLocaleString(
+          "en-US",
+        );
+
+        const div = document.createElement("div");
+        div.className = "product-card";
+        div.style.cssText = "width: 220px; flex-shrink: 0;";
+        div.innerHTML = `
+        <div class="product-img" style="background: var(--surface-0); aspect-ratio: 4/3; overflow: hidden; display: flex; align-items: center; justify-content: center; position: relative;">
+          <img src="${imgPath}" alt="${product.name}" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s;" />
+        </div>
+        <div class="product-body" style="padding: 12px; flex: 1; display: flex; flex-direction: column;">
+          <div class="product-category" style="font-size: 10px; font-weight: 600; color: var(--brand); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px;">${product.brand || "Thương hiệu"}</div>
+          <a href="product.html?id=${product.id}" style="text-decoration:none;">
+            <div class="product-name" style="font-size: 13px; font-weight: 600; color: var(--text-1); line-height: 1.4; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${product.name}</div>
+          </a>
+          <div class="product-footer" style="display: flex; align-items: center; justify-content: space-between; padding-top: 8px; border-top: 1px solid var(--border); margin-top: auto;">
+            <span class="product-price" style="font-size: 14px; font-weight: 700; color: var(--text-1);">$${formattedPrice}</span>
+            <button 
+              class="btn-add-cart" 
+              data-id="${product.id}" 
+              data-name="${product.name}" 
+              data-price="${product.price}" 
+              data-image="${imgPath}"
+              onclick="handleAddToCartClick(this)"
+              title="Thêm vào giỏ"
+              style="width: 28px; height: 28px; border-radius: 6px; background: var(--brand-lt); color: var(--brand); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;"
+            >
+              <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      `;
+        return div;
+      }
+    </script>
+  </body>
+</html>
