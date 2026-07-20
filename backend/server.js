@@ -194,7 +194,30 @@ app.get('/api/orders/:id', (req, res) => {
       if (!results || results.length === 0) {
         return res.status(404).json({ error: 'Order not found' });
       }
-      res.json(results[0]);
+      const order = results[0];
+      if (order.items_json) {
+        try {
+          const parsed = JSON.parse(order.items_json);
+          if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+            order.items = parsed.items || [];
+            order.isGift = parsed.isGift || false;
+            order.giftEmail = parsed.giftEmail || '';
+          } else {
+            order.items = Array.isArray(parsed) ? parsed : [];
+            order.isGift = false;
+            order.giftEmail = '';
+          }
+        } catch (e) {
+          order.items = [];
+          order.isGift = false;
+          order.giftEmail = '';
+        }
+      } else {
+        order.items = [];
+        order.isGift = false;
+        order.giftEmail = '';
+      }
+      res.json(order);
     });
   } catch (err) {
     return res.status(401).json({ error: 'Invalid token' });
@@ -278,7 +301,32 @@ app.get('/api/orders', (req, res) => {
       logger.error('Fetch orders error', { error: err.message });
       return res.status(500).json({ error: err.message });
     }
-    res.json(results);
+    const formatted = results.map(o => {
+      if (o.items_json) {
+        try {
+          const parsed = JSON.parse(o.items_json);
+          if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+            o.items = parsed.items || [];
+            o.isGift = parsed.isGift || false;
+            o.giftEmail = parsed.giftEmail || '';
+          } else {
+            o.items = Array.isArray(parsed) ? parsed : [];
+            o.isGift = false;
+            o.giftEmail = '';
+          }
+        } catch (e) {
+          o.items = [];
+          o.isGift = false;
+          o.giftEmail = '';
+        }
+      } else {
+        o.items = [];
+        o.isGift = false;
+        o.giftEmail = '';
+      }
+      return o;
+    });
+    res.json(formatted);
   });
 });
 
@@ -354,36 +402,52 @@ app.put('/api/users/profile', (req, res) => {
 
 // GET /api/products (SQL Injection Vulnerability)
 app.get('/api/products', (req, res) => {
+  let countQuery = "SELECT COUNT(*) AS total FROM products WHERE 1=1";
   let query = "SELECT * FROM products WHERE 1=1";
+  
+  let filterPart = "";
   if (req.query.brand) {
-    query += " AND brand = '" + req.query.brand + "'";
+    filterPart += " AND brand = '" + req.query.brand + "'";
   }
   if (req.query.minPrice) {
-    query += " AND price >= " + req.query.minPrice;
+    filterPart += " AND price >= " + req.query.minPrice;
   }
   if (req.query.maxPrice) {
-    query += " AND price <= " + req.query.maxPrice;
+    filterPart += " AND price <= " + req.query.maxPrice;
   }
   if (req.query.category) {
     if (Array.isArray(req.query.category)) {
       const categories = req.query.category.map(c => `'${c}'`).join(',');
-      query += " AND category IN (" + categories + ")";
+      filterPart += " AND category IN (" + categories + ")";
     } else {
-      query += " AND category = '" + req.query.category + "'";
+      filterPart += " AND category = '" + req.query.category + "'";
     }
   }
+  
+  query += filterPart;
+  countQuery += filterPart;
   
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
   const offset = (page - 1) * limit;
   query += ` LIMIT ${limit} OFFSET ${offset}`;
 
-  db.query(query, (err, results) => {
-    if (err) {
-      logger.error('Products fetch error', { error: err.message });
-      return res.status(500).json({ error: err.message });
+  db.query(countQuery, (countErr, countResults) => {
+    if (countErr) {
+      logger.error('Products count error', { error: countErr.message });
+      return res.status(500).json({ error: countErr.message });
     }
-    res.json(results);
+    const totalCount = countResults && countResults.length > 0 ? countResults[0].total : 0;
+
+    db.query(query, (err, results) => {
+      if (err) {
+        logger.error('Products fetch error', { error: err.message });
+        return res.status(500).json({ error: err.message });
+      }
+      res.setHeader('X-Total-Count', totalCount);
+      res.setHeader('Access-Control-Expose-Headers', 'X-Total-Count');
+      res.json(results);
+    });
   });
 });
 
@@ -528,10 +592,17 @@ app.post('/api/orders', (req, res) => {
   const token = authHeader.split(' ')[1];
   try {
     const decoded = jwt.verify(token, 'SecretKey123!');
-    const { items, total } = req.body;
+    const { items, total, isGift, giftEmail } = req.body;
     
-    const query = "INSERT INTO orders (user_id, total_amount, status) VALUES (?, ?, 'pending')";
-    db.query(query, [decoded.id, total], (err, result) => {
+    // Store JSON serialized items along with gift information
+    const orderData = {
+      items: items || [],
+      isGift: !!isGift,
+      giftEmail: giftEmail || ''
+    };
+    
+    const query = "INSERT INTO orders (user_id, total_amount, status, items_json) VALUES (?, ?, 'completed', ?)";
+    db.query(query, [decoded.id, total, JSON.stringify(orderData)], (err, result) => {
       if (err) {
         logger.error('Order creation error', { error: err.message });
         return res.status(500).json({ error: err.message });

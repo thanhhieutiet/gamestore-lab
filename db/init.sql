@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `user_id` INT,
   `total_amount` DECIMAL(10,2) NOT NULL,
   `status` VARCHAR(50) DEFAULT 'pending',
+  `items_json` TEXT DEFAULT NULL,
   FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -56,9 +57,9 @@ INSERT INTO `products` (`id`, `name`, `description`, `price`, `stock`, `metadata
 (2, 'Ethical Hacking Guide Book', 'Step by step guide to practice cyber defense and offensive techniques.', 45.50, 100, '<metadata><format>Paperback</format><edition>3rd</edition></metadata>'),
 (3, 'Smart Secure Lock', 'IoT Lock with advanced encryption protocols.', 120.00, 25, NULL);
 
-INSERT INTO `orders` (`id`, `user_id`, `total_amount`, `status`) VALUES
-(1, 2, 1545.50, 'completed'),
-(2, 3, 120.00, 'pending');
+INSERT INTO `orders` (`id`, `user_id`, `total_amount`, `status`, `items_json`) VALUES
+(1, 2, 1545.50, 'completed', '[{"id":1,"name":"CyberRange Workstation x100","price":1500.00,"quantity":1},{"id":2,"name":"Ethical Hacking Guide Book","price":45.50,"quantity":1}]'),
+(2, 3, 120.00, 'pending', '[{"id":3,"name":"Smart Secure Lock","price":120.00,"quantity":1}]');
 
 INSERT INTO `reviews` (`id`, `product_id`, `user_id`, `content`) VALUES
 (1, 1, 2, 'Amazing speed! Perfect for running nested virtual machines in the cyber lab.'),

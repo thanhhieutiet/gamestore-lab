@@ -26,7 +26,8 @@ function runSeeding() {
     "ALTER TABLE users ADD COLUMN phone VARCHAR(50) DEFAULT NULL",
     "ALTER TABLE products ADD COLUMN image_path VARCHAR(255) DEFAULT NULL",
     "ALTER TABLE products ADD COLUMN brand VARCHAR(100) DEFAULT NULL",
-    "ALTER TABLE products ADD COLUMN category VARCHAR(100) DEFAULT NULL"
+    "ALTER TABLE products ADD COLUMN category VARCHAR(100) DEFAULT NULL",
+    "ALTER TABLE orders ADD COLUMN items_json TEXT DEFAULT NULL"
   ];
 
   let index = 0;
@@ -69,20 +70,19 @@ function performInserts() {
     (3, 'user2', 'user2PasswordHash', 2, 'Tran Thi B', 'userb@gmail.com', '0912345678', NULL);
     
     INSERT INTO products (id, name, description, price, stock, brand, category, metadata_xml, image_path) VALUES
-    (1, 'Black Myth: Wukong', 'Action RPG based on classical Chinese novel Journey to the West.', 59.99, 10, 'Game Science', 'Nhập vai', '<metadata><publisher>Game Science</publisher><genre>Nhập vai</genre></metadata>', '/uploads/products/game_wukong.svg'),
-    (2, 'Cyberpunk 2077', 'Futuristic open-world action-adventure RPG in Night City.', 59.99, 12, 'CD Projekt Red', 'Nhập vai', '<metadata><publisher>CD Projekt Red</publisher><genre>Nhập vai</genre></metadata>', '/uploads/products/game_cyberpunk.svg'),
-    (3, 'GTA V', 'Open-world action thriller set in Los Santos and Blaine County.', 29.99, 8, 'Rockstar Games', 'Hành động', '<metadata><publisher>Rockstar Games</publisher><genre>Hành động</genre></metadata>', '/uploads/products/game_gtav.svg'),
-    (4, 'Elden Ring', 'Fantasy action RPG set in the Lands Between, created with George R.R. Martin.', 59.99, 20, 'FromSoftware', 'Nhập vai', '<metadata><publisher>FromSoftware</publisher><genre>Nhập vai</genre></metadata>', '/uploads/products/game_eldenring.svg'),
-    (5, 'Counter-Strike 2', 'Tactical first-person shooter featuring source 2 engine updates.', 14.99, 15, 'Valve', 'Hành động', '<metadata><publisher>Valve</publisher><genre>Hành động</genre></metadata>', '/uploads/products/game_cs2.svg'),
-    (6, 'Portal 2', 'Mind-bending first-person puzzle adventure featuring cooperative gameplay.', 9.99, 14, 'Valve', 'Hành động', '<metadata><publisher>Valve</publisher><genre>Hành động</genre></metadata>', '/uploads/products/game_portal2.svg'),
-    (7, 'Civilization VI', 'Turn-based strategy game where you build an empire to stand the test of time.', 59.99, 10, '2K Games', 'Chiến thuật', '<metadata><publisher>2K Games</publisher><genre>Chiến thuật</genre></metadata>', '/uploads/products/game_civ6.svg'),
-    (8, 'Microsoft Flight Simulator', 'Highly detailed aviation simulation of the entire globe.', 69.99, 15, 'Xbox Game Studios', 'Mô phỏng', '<metadata><publisher>Xbox Game Studios</publisher><genre>Mô phỏng</genre></metadata>', '/uploads/products/game_flight.svg'),
-    (9, 'Hades II', 'Rogue-like dungeon crawler fighting chronos, Titan of Time.', 29.99, 200, 'Supergiant Games', 'Nhập vai', '<metadata><publisher>Supergiant Games</publisher><genre>Nhập vai</genre></metadata>', '/uploads/products/game_hades.svg'),
-    (10, 'Red Dead Redemption 2', 'Epic Western open-world adventure detailing outlaw Arthur Morgan.', 59.99, 25, 'Rockstar Games', 'Hành động', '<metadata><publisher>Rockstar Games</publisher><genre>Hành động</genre></metadata>', '/uploads/products/game_rdr2.svg');
-    
-    INSERT INTO orders (id, user_id, total_amount, status) VALUES
-    (1, 2, 89.98, 'completed'),
-    (2, 3, 59.99, 'pending');
+    (1, 'Black Myth: Wukong', 'Action RPG based on classical Chinese novel Journey to the West.', 59.99, 10, 'Game Science', 'Nhập vai', '<metadata><publisher>Game Science</publisher><genre>Nhập vai</genre></metadata>', 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2358720/header.jpg'),
+    (2, 'Cyberpunk 2077', 'Futuristic open-world action-adventure RPG in Night City.', 59.99, 12, 'CD Projekt Red', 'Nhập vai', '<metadata><publisher>CD Projekt Red</publisher><genre>Nhập vai</genre></metadata>', 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/header.jpg'),
+    (3, 'GTA V', 'Open-world action thriller set in Los Santos and Blaine County.', 29.99, 8, 'Rockstar Games', 'Hành động', '<metadata><publisher>Rockstar Games</publisher><genre>Hành động</genre></metadata>', 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/header.jpg'),
+    (4, 'Elden Ring', 'Fantasy action RPG set in the Lands Between, created with George R.R. Martin.', 59.99, 20, 'FromSoftware', 'Nhập vai', '<metadata><publisher>FromSoftware</publisher><genre>Nhập vai</genre></metadata>', 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/header.jpg'),
+    (5, 'Counter-Strike 2', 'Tactical first-person shooter featuring source 2 engine updates.', 14.99, 15, 'Valve', 'Hành động', '<metadata><publisher>Valve</publisher><genre>Hành động</genre></metadata>', 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/730/header.jpg'),
+    (6, 'Portal 2', 'Mind-bending first-person puzzle adventure featuring cooperative gameplay.', 9.99, 14, 'Valve', 'Hành động', '<metadata><publisher>Valve</publisher><genre>Hành động</genre></metadata>', 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/620/header.jpg'),
+    (7, 'Civilization VI', 'Turn-based strategy game where you build an empire to stand the test of time.', 59.99, 10, '2K Games', 'Chiến thuật', '<metadata><publisher>2K Games</publisher><genre>Chiến thuật</genre></metadata>', 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/289070/header.jpg'),
+    (8, 'Microsoft Flight Simulator', 'Highly detailed aviation simulation of the entire globe.', 69.99, 15, 'Xbox Game Studios', 'Mô phỏng', '<metadata><publisher>Xbox Game Studios</publisher><genre>Mô phỏng</genre></metadata>', 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1250410/header.jpg'),
+    (9, 'Hades II', 'Rogue-like dungeon crawler fighting chronos, Titan of Time.', 29.99, 200, 'Supergiant Games', 'Nhập vai', '<metadata><publisher>Supergiant Games</publisher><genre>Nhập vai</genre></metadata>', 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1145350/header.jpg'),
+    (10, 'Red Dead Redemption 2', 'Epic Western open-world adventure detailing outlaw Arthur Morgan.', 59.99, 25, 'Rockstar Games', 'Hành động', '<metadata><publisher>Rockstar Games</publisher><genre>Hành động</genre></metadata>', 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1174180/header.jpg');
+    INSERT INTO orders (id, user_id, total_amount, status, items_json) VALUES
+    (1, 2, 89.98, 'completed', '[{"id":3,"name":"GTA V","price":29.99,"quantity":1},{"id":1,"name":"Black Myth: Wukong","price":59.99,"quantity":1}]'),
+    (2, 3, 59.99, 'pending', '[{"id":2,"name":"Cyberpunk 2077","price":59.99,"quantity":1}]');
     
     INSERT INTO reviews (id, product_id, user_id, content) VALUES
     (1, 1, 2, 'Stunning graphics and incredible boss fights!'),

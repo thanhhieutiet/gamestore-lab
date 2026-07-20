@@ -26,6 +26,24 @@
   <!-- Main Content Wrapper -->
   <main style="max-width:1280px; margin:0 auto; padding:32px 24px; min-height:calc(100vh - 60px - 280px);">
     
+    <!-- Breadcrumbs -->
+    <nav class="mb-6 flex" aria-label="Breadcrumb">
+      <ol class="inline-flex items-center space-x-1 md:space-x-2">
+        <li class="inline-flex items-center">
+          <a href="/index.html" class="inline-flex items-center text-xs font-semibold text-indigo-500 hover:text-indigo-600 transition" style="text-decoration:none;">
+            <svg class="w-3.5 h-3.5 mr-1.5" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.707.707a1 1 0 001.414-1.414l-7-7z"></path></svg>
+            Trang chủ
+          </a>
+        </li>
+        <li>
+          <div class="flex items-center">
+            <svg class="w-3 h-3 text-slate-400 mx-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+            <span class="text-xs font-medium text-slate-400">Lịch sử mua game</span>
+          </div>
+        </li>
+      </ol>
+    </nav>
+
     <!-- Title & Breadcrumb -->
     <div class="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
       <div>
@@ -33,7 +51,7 @@
         <p class="text-sm text-slate-500">Xem và quản lý các hóa đơn game bản quyền bạn đã sở hữu.</p>
       </div>
       <!-- Quick Diagnostic Alert info -->
-      <div class="p-3 text-xs bg-indigo-950/40 border border-indigo-800 text-indigo-300 rounded-lg max-w-md font-mono">
+      <div id="admin-hints-box" class="hidden p-3 text-xs bg-indigo-950/40 border border-indigo-800 text-indigo-300 rounded-lg max-w-md font-mono">
         <span class="font-bold">Security Lab Info:</span> Xem chi tiết đơn hàng sử dụng endpoint <code class="bg-indigo-900/60 px-1 rounded">/api/orders/:id</code> không kiểm tra phân quyền (IDOR).
       </div>
     </div>
@@ -42,27 +60,29 @@
     <div class="grid grid-cols-1 gap-6">
       
       <!-- Orders List Panel -->
-      <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
-        <div class="px-6 py-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
-          <h3 class="font-bold text-slate-800">Danh sách đơn hàng của bạn</h3>
-          <span class="text-xs bg-slate-200 text-slate-800 px-2.5 py-0.5 rounded font-semibold font-mono" id="orders-count-badge">0 đơn hàng</span>
+      <div style="background:var(--surface-1); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden; box-shadow:0 4px 6px -1px rgba(0,0,0,0.1);">
+        <div class="px-6 py-4 border-b flex justify-between items-center" style="background:var(--surface-0); border-color:var(--border);">
+          <h3 class="font-bold text-slate-800" style="color:var(--text-1);">Danh sách đơn hàng của bạn</h3>
+          <span style="font-size:11px; background:var(--brand-lt); color:var(--brand); padding:3px 10px; border-radius:9999px; font-weight:700; font-family:monospace;" id="orders-count-badge">0 đơn hàng</span>
         </div>
 
         <div class="overflow-x-auto">
-          <table class="w-full text-sm text-left text-slate-500">
-            <thead class="text-xs text-slate-700 uppercase bg-slate-100 border-b border-slate-200">
+          <table class="w-full text-sm text-left" style="color:var(--text-2);">
+            <thead class="text-xs uppercase border-b" style="background:var(--surface-0); color:var(--text-3); border-color:var(--border);">
               <tr>
-                <th scope="col" class="px-6 py-4">Mã đơn hàng (ID)</th>
-                <th scope="col" class="px-6 py-4">Ngày đặt</th>
-                <th scope="col" class="px-6 py-4">Tổng thanh toán</th>
-                <th scope="col" class="px-6 py-4">Trạng thái</th>
-                <th scope="col" class="px-6 py-4 text-center">Thao tác</th>
+                <th scope="col" class="px-4 py-4 text-center">ID</th>
+                <th scope="col" class="px-4 py-4">Sản phẩm</th>
+                <th scope="col" class="px-4 py-4">Loại hình</th>
+                <th scope="col" class="px-4 py-4">Ngày mua</th>
+                <th scope="col" class="px-4 py-4">Tổng tiền</th>
+                <th scope="col" class="px-4 py-4">Mã kích hoạt (CD-Key)</th>
+                <th scope="col" class="px-4 py-4 text-center">Thao tác</th>
               </tr>
             </thead>
-            <tbody id="orders-table-body">
+            <tbody id="orders-table-body" style="background:var(--surface-1);">
               <tr>
-                <td colspan="5" class="px-6 py-8 text-center text-slate-400">
-                  <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-600 mx-auto mb-2"></div>
+                <td colspan="7" class="px-6 py-12 text-center" style="color:var(--text-4);">
+                  <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mx-auto mb-3"></div>
                   Đang tải lịch sử đơn hàng...
                 </td>
               </tr>
@@ -74,7 +94,7 @@
       <!-- Export Console Box -->
       <div id="export-console-container" class="hidden bg-slate-900 text-slate-100 rounded-xl border border-slate-800 p-6 font-mono shadow-md">
         <div class="flex items-center justify-between mb-3 border-b border-slate-800 pb-2">
-          <span class="text-xs font-bold text-indigo-400 flex items-center gap-1.5">
+          <span id="export-console-title" class="text-xs font-bold text-indigo-400 flex items-center gap-1.5">
             <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
             KẾT QUẢ XUẤT HÓA ĐƠN (OS Command Output)
           </span>
@@ -95,8 +115,8 @@
           <h3 class="text-lg font-bold text-slate-900">
             Chi tiết đơn hàng (Vulnerability Audit)
           </h3>
-          <button type="button" class="text-slate-400 bg-transparent hover:bg-slate-200 hover:text-slate-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="order-detail-modal">
-            <svg class="w-3 h-3" fill="none" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg">
+          <button type="button" onclick="closeDetailModal()" class="text-slate-400 bg-transparent hover:bg-slate-200 hover:text-slate-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center">
+            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
             </svg>
           </button>
@@ -107,7 +127,7 @@
             <!-- Loaded dynamically -->
           </div>
           <!-- IDOR interactive test form -->
-          <div class="mt-6 border-t border-slate-100 pt-4">
+          <div id="admin-idor-testing" class="hidden mt-6 border-t border-slate-100 pt-4">
             <label class="block text-xs font-semibold text-slate-400 uppercase mb-2">Thử nghiệm IDOR (Thay đổi ID đơn hàng bất kỳ)</label>
             <div class="flex gap-2">
               <input type="number" id="idor-custom-id" class="bg-slate-50 border border-slate-300 text-slate-950 text-sm rounded-lg block w-full p-2" placeholder="Nhập ID đơn hàng khác..." min="1" />
@@ -144,6 +164,15 @@
       // Initialize flowbite modal instance
       const modalElement = document.getElementById('order-detail-modal');
       detailModal = new Modal(modalElement);
+
+      // Show/hide admin vulnerability diagnostic tools
+      const isAdmin = localStorage.getItem('role_id') === '1';
+      if (isAdmin) {
+        const hintBox = document.getElementById("admin-hints-box");
+        if (hintBox) hintBox.classList.remove("hidden");
+        const idorBox = document.getElementById("admin-idor-testing");
+        if (idorBox) idorBox.classList.remove("hidden");
+      }
 
       await fetchUserAndOrders();
     });
@@ -182,6 +211,34 @@
       }
     }
 
+    function getDeterministicKey(orderId, gameId) {
+      const seed = `${orderId}-${gameId}-GameLabKey`;
+      let hash = 0;
+      for (let i = 0; i < seed.length; i++) {
+        hash = (hash << 5) - hash + seed.charCodeAt(i);
+        hash |= 0;
+      }
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      const part = (val) => {
+        let str = '';
+        let temp = Math.abs(val);
+        for (let j = 0; j < 5; j++) {
+          str += chars[temp % chars.length];
+          temp = Math.floor(temp / chars.length);
+        }
+        return str;
+      };
+      return `${part(hash)}-${part(hash * 33)}-${part(hash * 999)}`;
+    }
+
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast("Đã sao chép CD-Key!", text, "success");
+      }).catch(err => {
+        console.error('Could not copy text: ', err);
+      });
+    }
+
     function renderOrders(orders) {
       const tbody = document.getElementById("orders-table-body");
       document.getElementById("orders-count-badge").textContent = `${orders.length} đơn hàng`;
@@ -189,7 +246,7 @@
       if (orders.length === 0) {
         tbody.innerHTML = `
           <tr>
-            <td colspan="5" class="px-6 py-8 text-center text-slate-400">
+            <td colspan="7" class="px-6 py-8 text-center text-slate-400" style="color:var(--text-4);">
               Bạn chưa có đơn hàng nào đã mua.
             </td>
           </tr>
@@ -200,24 +257,67 @@
       tbody.innerHTML = "";
       orders.forEach(order => {
         const tr = document.createElement("tr");
-        tr.className = "bg-white border-b border-slate-200 hover:bg-slate-50";
+        tr.className = "border-b hover:bg-slate-50/5 transition";
+        tr.style.cssText = "border-color:var(--border); background:var(--surface-1);";
         
         // Mock order date using consistent value or generation
         const dateStr = "15/07/2026";
-        const formattedPrice = parseFloat(order.total_amount).toLocaleString('en-US');
+        const formattedPrice = parseFloat(order.total_amount).toLocaleString('en-US', { minimumFractionDigits: 2 });
         
-        const statusBadge = order.status === 'completed'
-          ? `<span class="px-2.5 py-0.5 rounded text-xs font-bold bg-green-100 text-green-800">completed</span>`
-          : `<span class="px-2.5 py-0.5 rounded text-xs font-bold bg-amber-100 text-amber-800">pending</span>`;
+        const items = order.items || [];
+        const gameNamesHtml = items.map(item => `
+          <div class="font-semibold" style="color:var(--text-1);">${item.name} <span style="color:var(--text-4); font-weight:400; font-size:11px;">(x${item.quantity})</span></div>
+        `).join('');
+
+        let typeBadge = '';
+        if (order.isGift) {
+          typeBadge = `
+            <div class="flex flex-col gap-0.5">
+              <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-purple-900/30 text-purple-400 border border-purple-800 w-max">
+                <svg class="w-3 h-3 mr-1 text-purple-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 8v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8m18-3H3m18 0a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2m18 0v3H3V5m9 3v13m-3-13a3 3 0 0 0 3-3m0 0a3 3 0 0 0 3 3m-3-3v3"/>
+                </svg>
+                Quà tặng
+              </span>
+              <span class="text-[10px] text-slate-400 truncate max-w-[120px]" title="${order.giftEmail}">${order.giftEmail}</span>
+            </div>
+          `;
+        } else {
+          typeBadge = `
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-blue-900/30 text-blue-400 border border-blue-800 w-max">
+              <svg class="w-3 h-3 mr-1 text-blue-400" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
+              </svg>
+              Cá nhân
+            </span>
+          `;
+        }
+
+        let keysHtml = '';
+        if (order.status === 'completed' && items.length > 0) {
+          keysHtml = items.map(item => {
+            const cdkey = getDeterministicKey(order.id, item.id);
+            return `
+              <div class="flex items-center gap-1.5 font-mono text-[11px] bg-slate-900 text-slate-100 p-1 px-2 rounded border border-slate-800 max-w-[200px]" style="background:var(--surface-0); border-color:var(--border); color:var(--text-2);">
+                <span class="truncate select-all" title="${item.name}: ${cdkey}">${cdkey}</span>
+                <button onclick="copyToClipboard('${cdkey}')" class="text-indigo-400 hover:text-indigo-300 font-sans font-bold text-[10px] border-none bg-transparent cursor-pointer" title="Copy CD-Key">Copy</button>
+              </div>
+            `;
+          }).join('<div class="h-1"></div>');
+        } else {
+          keysHtml = '<span class="text-xs text-slate-400">Chưa kích hoạt</span>';
+        }
 
         tr.innerHTML = `
-          <td class="px-6 py-4 font-mono font-medium text-slate-900">${order.id}</td>
-          <td class="px-6 py-4">${dateStr}</td>
-          <td class="px-6 py-4 font-semibold text-slate-900">$${formattedPrice}</td>
-          <td class="px-6 py-4">${statusBadge}</td>
-          <td class="px-6 py-4 flex items-center justify-center gap-2">
-            <button onclick="viewOrderDetails(${order.id})" class="px-3 py-1.5 text-xs font-bold text-indigo-600 hover:bg-indigo-50 border border-indigo-200 rounded-lg transition">Xem chi tiết</button>
-            <button onclick="exportInvoice(${order.id})" class="px-3 py-1.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition flex items-center gap-1">
+          <td class="px-4 py-4 font-mono font-medium text-center" style="color:var(--text-1);">${order.id}</td>
+          <td class="px-4 py-4">${gameNamesHtml}</td>
+          <td class="px-4 py-4">${typeBadge}</td>
+          <td class="px-4 py-4" style="color:var(--text-3);">${dateStr}</td>
+          <td class="px-4 py-4 font-semibold text-slate-900" style="color:var(--text-1); font-family:monospace;">$${formattedPrice}</td>
+          <td class="px-4 py-4">${keysHtml}</td>
+          <td class="px-4 py-4 flex items-center justify-center gap-2">
+            <button onclick="viewOrderDetails(${order.id})" class="px-3 py-1.5 text-xs font-bold text-indigo-600 hover:bg-indigo-50/10 border border-indigo-200 rounded-lg transition" style="color:var(--brand); border-color:var(--brand); background:transparent; cursor:pointer;">Xem chi tiết</button>
+            <button onclick="exportInvoice(${order.id})" class="px-3 py-1.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition flex items-center gap-1" style="background:var(--brand); border:none; cursor:pointer;">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
               Xuất hóa đơn
             </button>
@@ -252,24 +352,65 @@
         
         const order = await res.json();
         
+        let itemsHtml = '';
+        if (order.items && order.items.length > 0) {
+          itemsHtml = `
+            <div class="mt-4 pt-4 border-t border-slate-200" style="border-color:var(--border);">
+              <strong class="text-slate-500 text-xs uppercase block mb-2" style="color:var(--text-3);">Danh sách game đã mua</strong>
+              <div class="space-y-2">
+                ${order.items.map(item => {
+                  const cdkey = getDeterministicKey(order.id, item.id);
+                  return `
+                    <div class="flex flex-col text-sm p-2.5 rounded-lg gap-2" style="background:var(--surface-0); border:1px solid var(--border);">
+                      <div class="flex justify-between items-center">
+                        <span class="font-medium text-slate-800" style="color:var(--text-1);">${item.name}</span>
+                        <span class="font-semibold text-slate-900" style="color:var(--text-1); font-family:monospace;">$${parseFloat(item.price * item.quantity).toFixed(2)}</span>
+                      </div>
+                      
+                      <!-- CD Key for this item -->
+                      <div class="flex items-center justify-between text-xs p-1.5 px-2.5 rounded border font-mono" style="background:var(--surface-1); border-color:var(--border); color:var(--text-2);">
+                        <span class="font-semibold" style="color:var(--brand);">CD-Key: ${cdkey}</span>
+                        <button onclick="copyToClipboard('${cdkey}')" class="text-indigo-400 hover:text-indigo-300 font-sans font-bold text-[10px] border-none bg-transparent cursor-pointer">Copy</button>
+                      </div>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+          `;
+        }
+
         modalContent.innerHTML = `
-          <div class="space-y-3 font-normal">
+          <div class="space-y-3 font-normal" style="color:var(--text-2);">
             <div>
-              <strong class="text-slate-500 text-xs uppercase block">Mã đơn hàng (Order ID)</strong> 
-              <span class="font-mono text-sm text-slate-900">${order.id}</span>
+              <strong class="text-slate-500 text-xs uppercase block" style="color:var(--text-3);">Mã đơn hàng (Order ID)</strong> 
+              <span class="font-mono text-sm text-slate-900" style="color:var(--text-1);">${order.id}</span>
             </div>
             <div>
-              <strong class="text-slate-500 text-xs uppercase block">Mã khách hàng (User ID)</strong> 
-              <span class="font-mono text-sm text-slate-900">${order.user_id}</span>
+              <strong class="text-slate-500 text-xs uppercase block" style="color:var(--text-3);">Mã khách hàng (User ID)</strong> 
+              <span class="font-mono text-sm text-slate-900" style="color:var(--text-1);">${order.user_id}</span>
             </div>
             <div>
-              <strong class="text-slate-500 text-xs uppercase block">Tổng thanh toán</strong> 
-              <span class="text-sm font-semibold text-slate-900">$${parseFloat(order.total_amount).toFixed(2)}</span>
+              <strong class="text-slate-500 text-xs uppercase block" style="color:var(--text-3);">Loại hình giao dịch</strong> 
+              <span class="text-sm font-semibold text-slate-900 inline-flex items-center gap-1.5" style="color:var(--text-1);">
+                ${order.isGift ? `
+                  <svg class="w-3.5 h-3.5 text-purple-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8m18-3H3m18 0a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2m18 0v3H3V5m9 3v13m-3-13a3 3 0 0 0 3-3m0 0a3 3 0 0 0 3 3m-3-3v3"/></svg>
+                  Quà tặng (Gửi tới: ${order.giftEmail})
+                ` : `
+                  <svg class="w-3.5 h-3.5 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
+                  Mua cho bản thân
+                `}
+              </span>
             </div>
             <div>
-              <strong class="text-slate-500 text-xs uppercase block">Trạng thái</strong> 
-              <span class="px-2.5 py-0.5 rounded text-xs font-bold ${order.status === 'completed' ? 'bg-green-100 text-green-800' : 'bg-amber-100 text-amber-800'}">${order.status}</span>
+              <strong class="text-slate-500 text-xs uppercase block" style="color:var(--text-3);">Tổng thanh toán</strong> 
+              <span class="text-sm font-semibold text-slate-900" style="color:var(--text-1); font-family:monospace;">$${parseFloat(order.total_amount).toFixed(2)}</span>
             </div>
+            <div>
+              <strong class="text-slate-500 text-xs uppercase block" style="color:var(--text-3);">Trạng thái</strong> 
+              <span class="px-2.5 py-0.5 rounded text-xs font-bold ${order.status === 'completed' ? 'bg-green-900/30 text-green-400 border border-green-800' : 'bg-amber-900/30 text-amber-400 border border-amber-800'}">${order.status}</span>
+            </div>
+            ${itemsHtml}
           </div>
         `;
       } catch (err) {
@@ -279,6 +420,12 @@
             <strong>Lỗi tải:</strong> ${err.message}
           </div>
         `;
+      }
+    }
+
+    function closeDetailModal() {
+      if (detailModal) {
+        detailModal.hide();
       }
     }
 
@@ -292,6 +439,23 @@
     async function exportInvoice(orderId) {
       const consoleBox = document.getElementById("export-console-container");
       const stdoutText = document.getElementById("export-stdout");
+      const consoleTitle = document.getElementById("export-console-title");
+
+      const isAdmin = localStorage.getItem('role_id') === '1';
+
+      if (consoleTitle) {
+        if (isAdmin) {
+          consoleTitle.innerHTML = `
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+            KẾT QUẢ XUẤT HÓA ĐƠN (OS Command Output)
+          `;
+        } else {
+          consoleTitle.innerHTML = `
+            <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span>
+            THÔNG BÁO XUẤT HÓA ĐƠN
+          `;
+        }
+      }
 
       consoleBox.classList.remove("hidden");
       stdoutText.textContent = "Đang chạy tác vụ xuất hóa đơn...";
@@ -311,8 +475,10 @@
           throw new Error(data.error || "Gặp lỗi khi xuất hóa đơn");
         }
 
-        stdoutText.textContent = data.stdout || data.message || "Không nhận được phản hồi stdout từ Server.";
-        showToast("Xuất hóa đơn thành công!", "Kiểm tra bảng console output bên dưới.", "success");
+        stdoutText.textContent = data.stdout || data.message || "Không nhận được phản hồi từ máy chủ.";
+        
+        const toastMsg = isAdmin ? "Kiểm tra bảng console output bên dưới." : "Hóa đơn đã được tạo thành công trên hệ thống.";
+        showToast("Xuất hóa đơn thành công!", toastMsg, "success");
       } catch (err) {
         console.error(err);
         stdoutText.textContent = `Lỗi hệ thống: ${err.message}`;

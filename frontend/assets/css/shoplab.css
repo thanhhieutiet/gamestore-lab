@@ -32,6 +32,12 @@
   --danger-lt: #361717;
   --warning: #f59e0b;
   --warning-lt: #2e2315;
+
+  /* Interactive States */
+  --hover-bg: #1e2330; /* Dark slate hover background */
+  --active-tab-bg: #1a1e2b;
+  --active-tab-text: #818cf8; /* Indigo-400 */
+  --active-tab-border: #312e81; /* Indigo-900 */
 }
 
 html.light {
@@ -53,6 +59,12 @@ html.light {
   --success-lt: #d1fae5;
   --danger-lt: #fee2e2;
   --warning-lt: #fef3c7;
+
+  /* Interactive States */
+  --hover-bg: #f1f5f9; /* Light grey hover background */
+  --active-tab-bg: #eef2ff;
+  --active-tab-text: #4f46e5;
+  --active-tab-border: #c7d2fe;
 }
 
 /* General Reset & Base Styles */
@@ -69,20 +81,30 @@ body {
   padding: 0;
 }
 
-/* Smooth Scrollbars */
+/* Smooth Scrollbars (Floating Style, Invisible Track) */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--surface-0);
+  background: transparent !important;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--border-md);
-  border-radius: var(--radius-sm);
+  background: var(--border-md) !important;
+  border-radius: 9999px !important;
+  border: 2px solid transparent;
+  background-clip: content-box;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--text-4);
+  background: var(--text-4) !important;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+/* Firefox Scrollbar support */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-md) transparent;
 }
 
 /* Animations */
@@ -132,6 +154,58 @@ h3 {
   transform: scale(1.04);
 }
 
+/* Checkboxes Custom styling to ensure high-contrast and theme integration */
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: var(--surface-1) !important;
+  border: 1px solid var(--border-md) !important;
+  width: 16px !important;
+  height: 16px !important;
+  border-radius: 4px !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  vertical-align: middle;
+  transition: background 0.15s, border-color 0.15s;
+  margin-right: 8px;
+}
+input[type="checkbox"]:checked {
+  background-color: var(--brand) !important;
+  border-color: var(--brand) !important;
+}
+input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  width: 4px;
+  height: 8px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  margin-top: -1px;
+}
+input[type="checkbox"]:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2) !important;
+}
+
+/* Sleek inputs styling for Dark/Light Mode contrast */
+input[type="text"], input[type="number"], input[type="email"], input[type="password"], select, textarea {
+  background-color: var(--surface-1) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text-1) !important;
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+input[type="text"]:focus, input[type="number"]:focus, input[type="email"]:focus, input[type="password"]:focus, select:focus, textarea:focus {
+  border-color: var(--brand) !important;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2) !important;
+  outline: none !important;
+}
+
 /* Theme Mappings for Tailwind Utilities */
 body, .bg-slate-50, .bg-gray-50 {
   background-color: var(--surface-0) !important;
@@ -156,5 +230,39 @@ body, .bg-slate-50, .bg-gray-50 {
 }
 .border-slate-300, .border-gray-300 {
   border-color: var(--border-md) !important;
+}
+
+/* Override Tailwind Background Hover classes dynamically */
+.hover\:bg-gray-100:hover, 
+.hover\:bg-slate-100:hover, 
+.hover\:bg-slate-50:hover,
+.hover\:bg-gray-50:hover {
+  background-color: var(--hover-bg) !important;
+}
+
+/* Ensure high contrast texts and active colors inside links and buttons */
+#user-dropdown-menu a:hover, 
+#user-dropdown-menu button:hover,
+.tab-btn:hover {
+  background-color: var(--hover-bg) !important;
+  color: var(--text-1) !important;
+}
+
+/* Map specific active tab styles to variables */
+.bg-indigo-50 {
+  background-color: var(--active-tab-bg) !important;
+}
+.text-indigo-600 {
+  color: var(--active-tab-text) !important;
+}
+.border-indigo-100 {
+  border-color: var(--active-tab-border) !important;
+}
+
+#navbar-placeholder {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  width: 100%;
 }
 

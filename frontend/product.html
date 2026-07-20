@@ -740,54 +740,7 @@
                 gap: 16px;
               "
             >
-              <div
-                style="
-                  display: flex;
-                  align-items: center;
-                  justify-content: space-between;
-                "
-              >
-                <label
-                  style="
-                    font-size: 14px;
-                    font-weight: 600;
-                    color: var(--text-2);
-                  "
-                  >Số lượng</label
-                >
-                <div
-                  style="
-                    display: flex;
-                    align-items: center;
-                    border: 1px solid var(--border);
-                    border-radius: var(--radius-sm);
-                    overflow: hidden;
-                    width: 128px;
-                    height: 38px;
-                    background: var(--surface-0);
-                  "
-                >
-                  <button onclick="changeQty(-1)" class="pd-qty-btn">−</button>
-                  <input
-                    type="text"
-                    id="quantity-select"
-                    value="1"
-                    readonly
-                    style="
-                      width: 48px;
-                      height: 100%;
-                      border: none;
-                      outline: none;
-                      text-align: center;
-                      font-size: 14px;
-                      font-weight: 600;
-                      color: var(--text-1);
-                      background: transparent;
-                    "
-                  />
-                  <button onclick="changeQty(1)" class="pd-qty-btn">+</button>
-                </div>
-              </div>
+              <input type="hidden" id="quantity-select" value="1" />
 
               <button
                 id="btn-add-to-cart"
@@ -870,6 +823,19 @@
       const API = "http://localhost:3000/api";
       const BASE_URL = "http://localhost:3000";
 
+      const discountRates = {
+        1: 10,
+        2: 15,
+        3: 20,
+        4: 10,
+        5: 25,
+        6: 15,
+        7: 30,
+        8: 40,
+        9: 50,
+        10: 50
+      };
+
       let currentProduct = null;
       let productId = null;
 
@@ -931,9 +897,22 @@
               "not-allowed";
           }
 
-          // Price formatting
+          // Price formatting (with discounts)
+          const discount = discountRates[currentProduct.id] || 15;
+          const originalPrice = currentProduct.price / (1 - discount / 100);
+          const formattedOriginal = parseFloat(originalPrice).toLocaleString("en-US", { minimumFractionDigits: 2 });
+          const formattedPrice = parseFloat(currentProduct.price).toLocaleString("en-US", { minimumFractionDigits: 2 });
+
           const priceValEl = document.getElementById("product-price-val");
-          priceValEl.textContent = `$${parseFloat(currentProduct.price).toLocaleString("en-US")}`;
+          priceValEl.innerHTML = `
+            <div style="display:flex; align-items:center; gap:12px;">
+              <span style="background:#ef4444; color:white; font-size:12px; font-weight:800; padding:2px 8px; border-radius:4px;">-${discount}%</span>
+              <div style="display:flex; flex-direction:column; align-items:flex-start;">
+                <span style="font-size:12px; color:var(--text-4); text-decoration:line-through; font-weight:500;">$${formattedOriginal}</span>
+                <span style="font-size:24px; font-weight:800; color:#ef4444;">$${formattedPrice}</span>
+              </div>
+            </div>
+          `;
           priceValEl.setAttribute("data-price", currentProduct.price); // Price is saved in DOM attribute for addToCart to read
 
           // Description
@@ -964,6 +943,42 @@
             `#PRD-${currentProduct.id}`;
           document.getElementById("spec-xml").textContent =
             currentProduct.metadata_xml || "Không có dữ liệu bổ sung";
+
+          // Check if this game is owned
+          let isOwned = false;
+          const token = localStorage.getItem("token");
+          if (token) {
+            try {
+              const payloadStr = token.split('.')[1];
+              const payload = JSON.parse(atob(payloadStr));
+              const userId = payload.id;
+              
+              const resOrders = await fetch(`${API}/orders`);
+              if (resOrders.ok) {
+                const orders = await resOrders.json();
+                const userOrders = orders.filter(o => o.user_id === userId && o.status === 'completed');
+                userOrders.forEach(o => {
+                  if (o.items && o.items.find(item => item.id == productId)) {
+                    isOwned = true;
+                  }
+                });
+              }
+            } catch (e) {
+              console.error("Error checking game ownership:", e);
+            }
+          }
+          
+          if (isOwned) {
+            const btn = document.getElementById("btn-add-to-cart");
+            btn.innerHTML = `
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              Đã sở hữu (Vào thư viện)
+            `;
+            btn.style.background = "var(--success)";
+            btn.setAttribute("onclick", "window.location.href='/library.html'");
+            btn.removeAttribute("onmouseover");
+            btn.removeAttribute("onmouseout");
+          }
         } catch (err) {
           console.error(err);
           document.getElementById("product-name").textContent =

@@ -21,19 +21,21 @@ function addToCart(id, name, price, image, quantityToAdd = 1) {
   
   // Note: price is read from client-side arguments (which can be manipulated)
   const numericPrice = parseFloat(price);
-  const qty = parseInt(quantityToAdd) || 1;
   
   if (existingItem) {
-    existingItem.quantity += qty;
-  } else {
-    cart.push({
-      id: id,
-      name: name,
-      price: numericPrice,
-      image: image,
-      quantity: qty
-    });
+    if (typeof showToast === 'function') {
+      showToast("Đã có trong giỏ!", `Game "${name}" đã nằm trong giỏ hàng của bạn.`, "warning");
+    }
+    return;
   }
+  
+  cart.push({
+    id: id,
+    name: name,
+    price: numericPrice,
+    image: image,
+    quantity: 1
+  });
   
   saveCart(cart);
   

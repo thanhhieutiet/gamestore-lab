@@ -749,12 +749,30 @@
         }
 
         const order = await res.json();
+        let itemsHtml = '';
+        if (order.items && order.items.length > 0) {
+          itemsHtml = `
+            <div class="mt-4 pt-4 border-t border-slate-200">
+              <strong class="text-slate-500 text-xs uppercase block mb-2" style="color:var(--text-3);">Danh sách game đã mua</strong>
+              <div class="space-y-2">
+                ${order.items.map(item => `
+                  <div class="flex justify-between items-center text-sm p-2.5 rounded-lg" style="background:var(--surface-0); border:1px solid var(--border);">
+                    <span class="font-medium text-slate-800" style="color:var(--text-1);">${item.name} <strong class="text-slate-400">×${item.quantity}</strong></span>
+                    <span class="font-semibold text-slate-900" style="color:var(--text-1);">$${parseFloat(item.price * item.quantity).toFixed(2)}</span>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `;
+        }
+
         content.innerHTML = `
           <div class="space-y-3 font-normal">
-            <div><strong class="text-slate-500 text-xs uppercase block">Order ID</strong> <span class="font-mono text-sm text-slate-900">${order.id}</span></div>
-            <div><strong class="text-slate-500 text-xs uppercase block">User ID</strong> <span class="font-mono text-sm text-slate-900">${order.user_id}</span></div>
-            <div><strong class="text-slate-500 text-xs uppercase block">Total Amount</strong> <span class="text-sm font-semibold text-slate-900">$${parseFloat(order.total_amount).toFixed(2)}</span></div>
-            <div><strong class="text-slate-500 text-xs uppercase block">Payment Status</strong> <span class="px-2.5 py-0.5 rounded text-xs font-bold ${order.status === 'completed' ? 'bg-green-100 text-green-800' : 'bg-amber-100 text-amber-800'}">${order.status}</span></div>
+            <div><strong class="text-slate-500 text-xs uppercase block" style="color:var(--text-3);">Order ID</strong> <span class="font-mono text-sm text-slate-900" style="color:var(--text-1);">${order.id}</span></div>
+            <div><strong class="text-slate-500 text-xs uppercase block" style="color:var(--text-3);">User ID</strong> <span class="font-mono text-sm text-slate-900" style="color:var(--text-1);">${order.user_id}</span></div>
+            <div><strong class="text-slate-500 text-xs uppercase block" style="color:var(--text-3);">Total Amount</strong> <span class="text-sm font-semibold text-slate-900" style="color:var(--text-1);">$${parseFloat(order.total_amount).toFixed(2)}</span></div>
+            <div><strong class="text-slate-500 text-xs uppercase block" style="color:var(--text-3);">Payment Status</strong> <span class="px-2.5 py-0.5 rounded text-xs font-bold ${order.status === 'completed' ? 'bg-green-900/30 text-green-400 border border-green-800' : 'bg-amber-900/30 text-amber-400 border border-amber-800'}">${order.status}</span></div>
+            ${itemsHtml}
           </div>
         `;
       } catch (err) {

@@ -12,9 +12,9 @@
       </a>
       
       <!-- Nav links -->
-      <div class="hidden md:flex items-center gap-4">
+      <div id="navbar-nav-links" class="hidden md:flex items-center gap-4">
         <a href="index.html" class="text-sm font-semibold hover:text-indigo-500 transition" style="color:var(--text-2); text-decoration:none;">Trang chủ</a>
-        <a href="#" class="text-sm font-semibold hover:text-indigo-500 transition" style="color:var(--text-2); text-decoration:none;">Deals</a>
+        <a href="deals.html" class="text-sm font-semibold hover:text-indigo-500 transition" style="color:var(--text-2); text-decoration:none;">Deals</a>
       </div>
     </div>
 
@@ -139,11 +139,14 @@
           <div id="user-dropdown-menu" class="hidden absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none z-50" style="background:var(--surface-1); border: 1px solid var(--border); border-radius: var(--radius-md);">
             <div class="py-1">
               ${adminOption}
+              <a href="/library.html" class="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" style="color:var(--text-2); text-decoration:none;">
+                Thư viện Game
+              </a>
               <a href="/profile.html" class="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" style="color:var(--text-2); text-decoration:none;">
-                Hồ sơ
+                Hồ sơ cá nhân
               </a>
               <a href="/orders.html" class="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" style="color:var(--text-2); text-decoration:none;">
-                Đơn hàng
+                Lịch sử mua game
               </a>
             </div>
             <div class="py-1">
@@ -157,6 +160,18 @@
       
       // Render username using innerHTML — DOM XSS entry point
       document.getElementById("user-greeting").innerHTML = `Xin chào, ${username}`;
+
+      // Dynamic nav link for Thư viện
+      const navLinks = document.getElementById("navbar-nav-links");
+      if (navLinks && !document.getElementById("navbar-library-link")) {
+        const a = document.createElement("a");
+        a.id = "navbar-library-link";
+        a.href = "/library.html";
+        a.className = "text-sm font-semibold hover:text-indigo-500 transition";
+        a.style.cssText = "color:var(--text-2); text-decoration:none;";
+        a.textContent = "Thư viện";
+        navLinks.appendChild(a);
+      }
     } else {
       authSection.innerHTML = `
         <a href="/login.html" class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-indigo-600" style="color:var(--text-2); text-decoration:none;">

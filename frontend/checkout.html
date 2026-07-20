@@ -27,7 +27,7 @@
   <main style="max-width:1280px; margin:0 auto; padding:32px 24px; min-height:calc(100vh - 60px - 280px);">
     <h1 style="font-size:24px; font-weight:800; color:var(--text-1); margin-bottom:24px;">Thanh toán đơn hàng</h1>
 
-    <div style="display:flex; gap:32px; flex-direction:column; lg:flex-direction:row; align-items:flex-start;">
+    <div class="flex flex-col lg:flex-row gap-8 items-start">
       
       <!-- Left: Form fields (2/3) -->
       <div style="flex: 2; width:100%; display:flex; flex-direction:column; gap:24px;">
@@ -37,9 +37,45 @@
           <h2 style="font-size:18px; font-weight:700; color:var(--text-1); margin-bottom:20px; border-bottom:1px solid var(--border); padding-bottom:12px;">Thông tin nhận key game & hóa đơn</h2>
           
           <form id="checkout-form" onsubmit="event.preventDefault();">
+            <!-- Purchase Options -->
+            <div style="margin-bottom:20px; border-bottom:1px solid var(--border); padding-bottom:16px;">
+              <label style="display:block; font-size:13px; font-weight:600; color:var(--text-2); margin-bottom:10px;">Lựa chọn giao dịch</label>
+              <div style="display:flex; gap:24px;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <input type="radio" id="purpose-self" name="purchase_purpose" value="self" checked onclick="toggleGiftEmail(false)" style="accent-color:var(--brand); width:16px; height:16px; cursor:pointer;" />
+                  <label for="purpose-self" style="font-size:14px; color:var(--text-2); cursor:pointer; font-weight:500;">Mua cho bản thân (Kích hoạt trực tiếp)</label>
+                </div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <input type="radio" id="purpose-gift" name="purchase_purpose" value="gift" onclick="toggleGiftEmail(true)" style="accent-color:var(--brand); width:16px; height:16px; cursor:pointer;" />
+                  <label for="purpose-gift" style="font-size:14px; color:var(--text-2); cursor:pointer; font-weight:500;">Mua làm quà tặng (Gửi CD Key)</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recipient Account Notice -->
+            <div id="account-notice-box" class="p-3 bg-indigo-950/20 border border-indigo-900/50 rounded-lg mb-5 text-sm" style="color:var(--text-2); display:flex; align-items:center; gap:8px;">
+              <svg class="w-4 h-4 text-indigo-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+              <span>Game sẽ được kích hoạt vào tài khoản: <strong id="checkout-account-name" style="color:var(--brand);"></strong></span>
+            </div>
+
+            <div id="gift-email-container" class="hidden" style="margin-bottom:16px;">
+              <label style="display:block; font-size:13px; font-weight:600; color:var(--text-2); margin-bottom:6px;">Email người nhận quà</label>
+              <input
+                type="email"
+                id="gift-email"
+                placeholder="e.g. friend@email.com"
+                style="width:100%; height:40px; padding:0 14px; border:1px solid var(--border); border-radius:var(--radius-sm); font-size:14px; background:var(--surface-0); color:var(--text-1); outline:none;"
+              />
+            </div>
+
+            <!-- Hidden Inputs to preserve form validation fields -->
+            <input type="hidden" id="recipient-city" value="Hanoi" />
+            <input type="hidden" id="recipient-notes" value="Digital Game Delivery" />
+
+            <!-- Billing Details -->
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
               <div>
-                <label style="display:block; font-size:13px; font-weight:600; color:var(--text-2); margin-bottom:6px;">Tên người nhận key/hóa đơn</label>
+                <label style="display:block; font-size:13px; font-weight:600; color:var(--text-2); margin-bottom:6px;">Tên người thanh toán</label>
                 <input
                   type="text"
                   id="recipient-name"
@@ -49,7 +85,7 @@
                 />
               </div>
               <div>
-                <label style="display:block; font-size:13px; font-weight:600; color:var(--text-2); margin-bottom:6px;">Số điện thoại</label>
+                <label style="display:block; font-size:13px; font-weight:600; color:var(--text-2); margin-bottom:6px;">Số điện thoại liên hệ</label>
                 <input
                   type="text"
                   id="recipient-phone"
@@ -61,52 +97,31 @@
             </div>
 
             <div style="margin-bottom:16px;">
-              <label style="display:block; font-size:13px; font-weight:600; color:var(--text-2); margin-bottom:6px;">Tỉnh / Thành phố</label>
-              <select id="recipient-city" style="width:100%; height:40px; padding:0 14px; border:1px solid var(--border); border-radius:var(--radius-sm); font-size:14px; background:var(--surface-0); color:var(--text-1); outline:none; cursor:pointer;">
-                <option value="Hanoi">Hà Nội</option>
-                <option value="HCM">TP. Hồ Chí Minh</option>
-                <option value="DaNang">Đà Nẵng</option>
-                <option value="HaiPhong">Hải Phòng</option>
-                <option value="CanTho">Cần Thơ</option>
-                <option value="Other">Tỉnh thành khác</option>
-              </select>
-            </div>
-
-            <div style="margin-bottom:16px;">
-              <label style="display:block; font-size:13px; font-weight:600; color:var(--text-2); margin-bottom:6px;">Email nhận key game / Địa chỉ nhận hóa đơn</label>
+              <label style="display:block; font-size:13px; font-weight:600; color:var(--text-2); margin-bottom:6px;">Email nhận hóa đơn số & Key Game</label>
               <input
                 type="text"
                 id="recipient-address"
-                placeholder="e.g. email@domain.com / Số 123 Đường ABC..."
+                placeholder="e.g. email@domain.com"
                 required
                 style="width:100%; height:40px; padding:0 14px; border:1px solid var(--border); border-radius:var(--radius-sm); font-size:14px; background:var(--surface-0); color:var(--text-1); outline:none;"
               />
             </div>
 
-            <div style="margin-bottom:20px;">
-              <label style="display:block; font-size:13px; font-weight:600; color:var(--text-2); margin-bottom:6px;">Ghi chú</label>
-              <textarea
-                id="recipient-notes"
-                placeholder="Ghi chú nhận key / hóa đơn nếu có..."
-                style="width:100%; padding:12px; border:1px solid var(--border); border-radius:var(--radius-sm); font-size:14px; background:var(--surface-0); color:var(--text-1); outline:none; height:80px; box-sizing:border-box;"
-              ></textarea>
-            </div>
-
             <!-- Payment Methods -->
-            <div class="payment-methods" style="margin-bottom: 20px;">
-              <label style="display:block; font-size:13px; font-weight:600; color:var(--text-2); margin-bottom:10px;">Phương thức thanh toán</label>
+            <div class="payment-methods" style="margin-bottom: 20px; border-top:1px solid var(--border); padding-top:16px;">
+              <label style="display:block; font-size:13px; font-weight:600; color:var(--text-2); margin-bottom:10px;">Phương thức thanh toán số</label>
               <div style="display:flex; flex-direction:column; gap:10px;">
                 <div style="display:flex; align-items:center; gap:8px;">
-                  <input type="radio" id="pay-cod" name="payment_method" value="COD" checked onclick="toggleCardFields(false)" style="accent-color:var(--brand); width:16px; height:16px; cursor:pointer;" />
-                  <label for="pay-cod" style="font-size:14px; color:var(--text-2); cursor:pointer;">Thanh toán khi nhận hàng (COD)</label>
+                  <input type="radio" id="pay-momo" name="payment_method" value="MoMo" checked onclick="toggleCardFields(false)" style="accent-color:var(--brand); width:16px; height:16px; cursor:pointer;" />
+                  <label for="pay-momo" style="font-size:14px; color:var(--text-2); cursor:pointer;">Ví điện tử MoMo / ZaloPay</label>
                 </div>
                 <div style="display:flex; align-items:center; gap:8px;">
-                  <input type="radio" id="pay-bank" name="payment_method" value="Bank" onclick="toggleCardFields(false)" style="accent-color:var(--brand); width:16px; height:16px; cursor:pointer;" />
-                  <label for="pay-bank" style="font-size:14px; color:var(--text-2); cursor:pointer;">Chuyển khoản ngân hàng</label>
+                  <input type="radio" id="pay-wallet" name="payment_method" value="Wallet" onclick="toggleCardFields(false)" style="accent-color:var(--brand); width:16px; height:16px; cursor:pointer;" />
+                  <label for="pay-wallet" style="font-size:14px; color:var(--text-2); cursor:pointer;">Ví GameLab Wallet</label>
                 </div>
                 <div style="display:flex; align-items:center; gap:8px;">
                   <input type="radio" id="pay-card" name="payment_method" value="Card" onclick="toggleCardFields(true)" style="accent-color:var(--brand); width:16px; height:16px; cursor:pointer;" />
-                  <label for="pay-card" style="font-size:14px; color:var(--text-2); cursor:pointer;">Thẻ tín dụng (Credit Card)</label>
+                  <label for="pay-card" style="font-size:14px; color:var(--text-2); cursor:pointer;">Thẻ Quốc tế (Credit/Debit Card)</label>
                 </div>
               </div>
             </div>
@@ -155,11 +170,11 @@
       </div>
 
       <!-- Right: Summary Card (1/3) -->
-      <div style="flex: 1; width:100%; background:var(--surface-1); border:1px solid var(--border); border-radius:var(--radius-lg); padding:24px;">
+      <div style="flex: 1; width:100%; background:var(--surface-1); border:1px solid var(--border); border-radius:var(--radius-lg); padding:24px; position: sticky; top: 84px; box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);">
         <h2 style="font-size:18px; font-weight:700; color:var(--text-1); margin-bottom:20px; border-bottom:1px solid var(--border); padding-bottom:12px;">Đơn hàng của bạn</h2>
         
         <!-- Cart Items List -->
-        <div id="checkout-summary-items" style="border-bottom:1px solid var(--border); padding-bottom:16px; margin-bottom:16px;">
+        <div id="checkout-summary-items" style="max-height:220px; overflow-y:auto; border-bottom:1px solid var(--border); padding-bottom:8px; margin-bottom:16px; scrollbar-width:thin;">
           <!-- Loaded dynamically -->
         </div>
 
@@ -174,8 +189,8 @@
         </div>
 
         <div style="display:flex; justify-content:space-between; margin-bottom:16px; font-size:14px; color:var(--text-2);">
-          <span>Phí giao dịch key game</span>
-          <span>$30.00 <span style="font-size:12px; color:var(--text-3);">(30k)</span></span>
+          <span>Phí giao dịch số (Digital fee)</span>
+          <span style="color:var(--success); font-weight:600;">Miễn phí</span>
         </div>
 
         <div style="display:flex; justify-content:space-between; margin-bottom:24px; font-size:16px; font-weight:700; color:var(--text-1); border-top:1px dashed var(--border); padding-top:16px;">
@@ -183,13 +198,68 @@
           <span id="checkout-total">$0.00</span>
         </div>
 
-        <button onclick="placeOrder()" style="width:100%; display:inline-flex; align-items:center; justify-content:center; font-size:15px; font-weight:700; border-radius:var(--radius-sm); cursor:pointer; padding:0 16px; height:44px; border:none; background:var(--brand); color:white; font-family:inherit; transition:background .15s;" onmouseover="this.style.background='var(--brand-dark)'" onmouseout="this.style.background='var(--brand)'">
-          Đặt hàng
+        <button onclick="placeOrder()" style="width:100%; display:inline-flex; align-items:center; justify-content:center; font-size:15px; font-weight:700; border-radius:var(--radius-sm); cursor:pointer; padding:0 16px; height:44px; border:none; background:var(--brand); color:white; font-family:inherit; transition:all 0.15s; margin-bottom: 20px;" onmouseover="this.style.background='var(--brand-dark)'; this.style.transform='translateY(-1px)';" onmouseout="this.style.background='var(--brand)'; this.style.transform='none';">
+          Thanh toán & Nhận Game
         </button>
+
+        <!-- Trust Badges & Secure Info -->
+        <div style="border-top: 1px solid var(--border); padding-top: 16px; display:flex; flex-direction:column; gap:12px;">
+          <!-- Secure Checkout Indicator -->
+          <div style="display:flex; align-items:center; gap:8px; color:var(--text-3); font-size:12px;">
+            <svg class="w-4 h-4 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+            </svg>
+            <span>Thanh toán 100% bảo mật SSL</span>
+          </div>
+
+          <!-- Refund / Activation Guarantee -->
+          <div style="display:flex; align-items:center; gap:8px; color:var(--text-3); font-size:12px;">
+            <svg class="w-4 h-4 text-amber-500 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+            <span>Kích hoạt game ngay lập tức</span>
+          </div>
+
+          <!-- Payment Logos Mockup -->
+          <div style="display:flex; gap:6px; align-items:center; justify-content:center; margin-top:4px; opacity:0.65; flex-wrap:wrap;">
+            <span style="font-size:9px; font-weight:800; background:rgba(255,255,255,0.03); border:1px solid var(--border); padding:2px 6px; border-radius:4px; color:var(--text-3); font-family:sans-serif; letter-spacing:0.05em;">MOMO</span>
+            <span style="font-size:9px; font-weight:800; background:rgba(255,255,255,0.03); border:1px solid var(--border); padding:2px 6px; border-radius:4px; color:var(--text-3); font-family:sans-serif; letter-spacing:0.05em;">ZALOPAY</span>
+            <span style="font-size:9px; font-weight:800; background:rgba(255,255,255,0.03); border:1px solid var(--border); padding:2px 6px; border-radius:4px; color:var(--text-3); font-family:sans-serif; letter-spacing:0.05em;">CARD</span>
+            <span style="font-size:9px; font-weight:800; background:rgba(255,255,255,0.03); border:1px solid var(--border); padding:2px 6px; border-radius:4px; color:var(--text-3); font-family:sans-serif; letter-spacing:0.05em;">WALLET</span>
+          </div>
+        </div>
       </div>
 
     </div>
   </main>
+
+  <!-- Gift Key Success Modal -->
+  <div id="gift-success-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-md max-h-full">
+      <div class="relative rounded-xl shadow-lg border" style="background:var(--surface-1); border-color:var(--border);">
+        <!-- Modal header -->
+        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t" style="border-color:var(--border);">
+          <h3 class="text-lg font-bold text-slate-900" style="color:var(--text-1);">Đã tạo quà tặng thành công!</h3>
+        </div>
+        <!-- Modal body -->
+        <div class="p-4 md:p-5 space-y-4">
+          <p class="text-sm" style="color:var(--text-2);">
+            Hệ thống đã gửi CD Key kích hoạt game đến email: <strong id="modal-gift-email" style="color:var(--brand);"></strong>
+          </p>
+          <div class="space-y-3 pt-2" id="modal-keys-list">
+            <!-- CD Keys rendered here -->
+          </div>
+          <p class="text-xs" style="color:var(--text-4);">Mẹo: Bạn có thể sao chép trực tiếp CD Key để gửi cho bạn bè.</p>
+        </div>
+        <!-- Modal footer -->
+        <div class="flex items-center justify-end p-4 md:p-5 border-t rounded-b" style="border-color:var(--border);">
+          <button onclick="closeGiftModal()" type="button" class="text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 px-5 py-2.5 rounded-lg transition" style="border:none; cursor:pointer;">
+            Hoàn tất
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Footer placeholder -->
   <div id="footer-placeholder"></div>
@@ -200,6 +270,7 @@
   <script src="/assets/js/cart.js"></script>
   <script>
     const API = "http://localhost:3000/api";
+    let giftModalInstance = null;
 
     document.addEventListener("DOMContentLoaded", async () => {
       await includeComponent("#navbar-placeholder", "/components/navbar.html");
@@ -214,6 +285,15 @@
         return;
       }
 
+      // Initialize gift modal
+      const modalEl = document.getElementById("gift-success-modal");
+      giftModalInstance = new Modal(modalEl);
+
+      // Populate billing details
+      document.getElementById("checkout-account-name").textContent = localStorage.getItem("username") || "Khách";
+      document.getElementById("recipient-name").value = localStorage.getItem("displayName") || localStorage.getItem("username") || "";
+      document.getElementById("recipient-address").value = localStorage.getItem("email") || "";
+
       loadOrderSummary();
     });
 
@@ -226,9 +306,31 @@
       }
     }
 
+    function toggleGiftEmail(show) {
+      const container = document.getElementById("gift-email-container");
+      if (show) {
+        container.classList.remove("hidden");
+      } else {
+        container.classList.add("hidden");
+      }
+    }
+
+    function getCheckoutItems() {
+      try {
+        return JSON.parse(sessionStorage.getItem('checkout_items')) || getCart();
+      } catch (e) {
+        return getCart();
+      }
+    }
+    
+    function getCheckoutTotal() {
+      const items = getCheckoutItems();
+      return items.reduce((sum, item) => sum + item.price, 0);
+    }
+
     function loadOrderSummary() {
       const summaryList = document.getElementById("checkout-summary-items");
-      const cart = getCart();
+      const cart = getCheckoutItems();
 
       if (cart.length === 0) {
         window.location.href = "cart.html";
@@ -237,11 +339,11 @@
 
       summaryList.innerHTML = "";
       cart.forEach(item => {
-        const itemSubtotal = item.price * item.quantity;
+        const itemSubtotal = item.price;
         const div = document.createElement("div");
-        div.style.cssText = "display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; font-size:13px; color:var(--text-2);";
+        div.style.cssText = "display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; font-size:13px; color:var(--text-2); padding-right:8px;";
         div.innerHTML = `
-          <span style="max-width:200px; word-break:break-word;">${item.name} <strong style="color:var(--text-3);">× ${item.quantity}</strong></span>
+          <span style="max-width:200px; word-break:break-word;">${item.name}</span>
           <span style="font-weight:600;">$${itemSubtotal.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
         `;
         summaryList.appendChild(div);
@@ -253,8 +355,8 @@
     let discountPercent = 0;
 
     function updateTotals() {
-      const subtotal = getCartTotal();
-      const shipping = 30.00; // 30k
+      const subtotal = getCheckoutTotal();
+      const shipping = 0.00; // Digital game key - no physical shipping
       
       const discountAmount = subtotal * (discountPercent / 100);
       const total = subtotal + shipping - discountAmount;
@@ -278,17 +380,14 @@
       messageEl.innerHTML = "<span class='text-gray-500'>Đang kiểm tra...</span>";
 
       try {
-        // SQL Injection & DOM XSS point: parameters passed without sanitization
         const res = await fetch(`${API}/coupons/validate?code=${code}`);
         const data = await res.json();
 
         if (res.ok) {
-          // Render discount message directly using innerHTML (SQLi + DOM XSS)
           messageEl.innerHTML = `<span class="text-green-600">${data.message} (Giảm ${data.discount}%)</span>`;
           discountPercent = data.discount || 10;
           updateTotals();
         } else {
-          // Renders SQL errors or standard failure messages via innerHTML
           messageEl.innerHTML = `<span class="text-red-600">Lỗi: ${data.error || 'Mã không hợp lệ'}</span>`;
           discountPercent = 0;
           updateTotals();
@@ -299,6 +398,24 @@
         discountPercent = 0;
         updateTotals();
       }
+    }
+
+    function generateMockKey() {
+      const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      let key = "";
+      for (let i = 0; i < 3; i++) {
+        let block = "";
+        for (let j = 0; j < 5; j++) {
+          block += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        key += (i > 0 ? "-" : "") + block;
+      }
+      return key;
+    }
+
+    function closeGiftModal() {
+      if (giftModalInstance) giftModalInstance.hide();
+      window.location.href = "orders.html";
     }
 
     async function placeOrder() {
@@ -316,14 +433,21 @@
       const address = document.getElementById("recipient-address").value.trim();
 
       if (!name || !phone || !address) {
-        showToast("Thiếu thông tin", "Vui lòng điền đầy đủ thông tin nhận key game và hóa đơn.", "error");
+        showToast("Thiếu thông tin", "Vui lòng điền đầy đủ thông tin thanh toán & nhận hóa đơn.", "error");
         return;
       }
 
-      const cart = getCart();
-      
-      // Trust client-side calculated total (Insecure Price Validation bypass vulnerability)
-      const total = window.finalOrderTotal || (getCartTotal() + 30.00);
+      const cart = getCheckoutItems();
+      const total = window.finalOrderTotal || getCheckoutTotal();
+
+      // Check gift option details
+      const isGift = document.getElementById("purpose-gift").checked;
+      const giftEmail = document.getElementById("gift-email").value.trim();
+
+      if (isGift && !giftEmail) {
+        showToast("Thiếu thông tin", "Vui lòng nhập email của người nhận quà tặng.", "error");
+        return;
+      }
 
       try {
         const res = await fetch(`${API}/orders`, {
@@ -334,7 +458,9 @@
           },
           body: JSON.stringify({
             items: cart,
-            total: total
+            total: total,
+            isGift: isGift,
+            giftEmail: giftEmail
           })
         });
 
@@ -344,11 +470,39 @@
         }
 
         showToast("Đặt hàng thành công!", `Đơn hàng #${data.orderId} đã được tạo.`, "success");
-        clearCart();
+        
+        // Clean up cart: remove only the purchased items!
+        const mainCart = getCart();
+        const purchasedIds = cart.map(c => c.id);
+        const remainingCart = mainCart.filter(item => !purchasedIds.includes(item.id));
+        saveCart(remainingCart);
+        
+        // Remove temporary checkout_items
+        sessionStorage.removeItem('checkout_items');
 
-        setTimeout(() => {
-          window.location.href = "orders.html";
-        }, 2000);
+        if (isGift) {
+          document.getElementById("modal-gift-email").textContent = giftEmail;
+          const listEl = document.getElementById("modal-keys-list");
+          listEl.innerHTML = "";
+          cart.forEach(game => {
+            const row = document.createElement("div");
+            row.style.cssText = "display:flex; flex-direction:column; gap:4px; padding:10px; border-radius:8px; border:1px solid var(--border); background:var(--surface-0);";
+            row.innerHTML = `
+              <span class="text-xs font-bold" style="color:var(--text-1);">${game.name}</span>
+              <div class="flex items-center justify-between gap-4">
+                <span class="font-mono text-sm font-semibold text-indigo-400 select-all">${generateMockKey()}</span>
+                <span class="text-[10px] text-green-500 font-bold uppercase">CD Key</span>
+              </div>
+            `;
+            listEl.appendChild(row);
+          });
+          giftModalInstance.show();
+        } else {
+          // Purchase for myself -> direct redirect to dedicated Game Library
+          setTimeout(() => {
+            window.location.href = "library.html";
+          }, 1500);
+        }
 
       } catch (err) {
         console.error(err);
