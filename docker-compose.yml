@@ -26,8 +26,10 @@ services:
     restart: always
     environment:
       - PORT=3000
-    ports:
-      - "3000:3000"
+      - DB_HOST=db
+      - DB_USER=dbuser
+      - DB_PASSWORD=dbpassword
+      - DB_NAME=ecommerce_db
     volumes:
       - ./backend/logs:/app/logs
     depends_on:
