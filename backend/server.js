@@ -165,7 +165,7 @@ app.get('/api/files', (req, res) => {
 // f) POST /api/orders/export
 app.post('/api/orders/export', (req, res) => {
   const orderId = req.body.order_id;
-  const cmd = "echo Exporting order " + orderId + " > /tmp/order.txt";
+  const cmd = "echo Exporting order " + orderId;
   exec(cmd, (err, stdout, stderr) => {
     if (err) {
       logger.error('Export error', { error: err.message });
