@@ -1,0 +1,11 @@
+# Force Unix line endings for shell scripts (critical for Linux containers)
+*.sh text eol=lf
+
+# Force Unix line endings for Dockerfiles
+Dockerfile text eol=lf
+
+# Force Unix line endings for nginx configs
+nginx/*.conf text eol=lf
+
+# Keep default Git behavior for everything else
+* text=auto
